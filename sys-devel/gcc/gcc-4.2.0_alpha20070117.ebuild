@@ -3,6 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/gcc-4.2.0_alpha20070117.ebuild,v 1.1 2007/01/18 05:13:42 vapier Exp $
 
 ETYPE="gcc-compiler"
+GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
 inherit toolchain
 
