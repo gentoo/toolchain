@@ -52,7 +52,7 @@ src_unpack() {
 	use vanilla && return 0
 
 	# Fix cross-compiling
-	epatch "${FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
+	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 }
 
 pkg_postinst() {
