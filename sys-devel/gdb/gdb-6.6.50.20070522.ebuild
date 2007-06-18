@@ -19,7 +19,7 @@ LICENSE="GPL-2 LGPL-2"
 [[ ${CTARGET} != ${CHOST} ]] \
 	&& SLOT="${CTARGET}" \
 	|| SLOT="${PV}"
-KEYWORDS="-*"
+KEYWORDS=""
 IUSE="nls test"
 
 RDEPEND=">=sys-libs/ncurses-5.2-r2"
