@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+export FEATURES="assume-digests -strict"
+
+lynx -dump ftp://sources.redhat.com/pub/gcc/snapshots > list
+
+major=$(grep /LATEST list | cut -d- -f2)
+echo "GCC majors:" ${major}
+
+for m in ${major} ; do
+	snaps=$(grep /${m}- list | cut -d- -f2)
+	curr=$(ls gcc-${m}.0_alpha* | LC_ALL=C sort | tail -n 1)
+	[ -z "${curr}" ] && echo "no current ebuild for major ${m}" && exit 1
+	echo "### ${m}: ${curr}"
+	for s in ${snaps} ; do
+		s="gcc-${m}.0_alpha${s}.ebuild"
+		[ -e ${s} ] && continue
+		echo " ${s}"
+		cp ${curr} ${s}
+		sudo env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild ${s} fetch
+	done
+done
+
+sudo ebuild ${s} manifest
+
+rm -f list
