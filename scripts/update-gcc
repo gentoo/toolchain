@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+[ -d sys-devel ] && cd sys-devel/gcc
+if [ ! -e metadata.xml ] ; then
+	echo "Run this in the gcc dir"
+	exit 1
+fi
+
 export FEATURES="assume-digests -strict"
 
 lynx -dump ftp://sources.redhat.com/pub/gcc/snapshots > list
