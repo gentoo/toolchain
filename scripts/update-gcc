@@ -1,12 +1,17 @@
 #!/bin/bash -e
 
+sudo=
+
 [ -d sys-devel ] && cd sys-devel/gcc
+[ -d ../sys-devel ] && cd ../sys-devel/gcc
 if [ ! -e metadata.xml ] ; then
 	echo "Run this in the gcc dir"
 	exit 1
 fi
 
 export FEATURES="assume-digests -strict"
+
+date
 
 lynx -dump ftp://sources.redhat.com/pub/gcc/snapshots > list
 
@@ -23,10 +28,10 @@ for m in ${major} ; do
 		[ -e ${s} ] && continue
 		echo " ${s}"
 		cp ${curr} ${s}
-		sudo env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild ${s} fetch
+		$sudo env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild ${s} fetch
 	done
 done
 
-sudo ebuild ${s} manifest
-
 rm -f list
+
+$sudo ebuild ${s} manifest
