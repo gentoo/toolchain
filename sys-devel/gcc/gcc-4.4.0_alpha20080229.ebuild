@@ -16,7 +16,7 @@ RDEPEND=">=sys-libs/zlib-1.1.4
 	|| ( >=sys-devel/gcc-config-1.3.12-r4 app-admin/eselect-compiler )
 	virtual/libiconv
 	>=dev-libs/gmp-4.2.1
-	>=dev-libs/mpfr-2.2.0_p10
+	>=dev-libs/mpfr-2.3
 	!build? (
 		gcj? (
 			gtk? (
