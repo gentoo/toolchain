@@ -10,7 +10,7 @@ inherit toolchain
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
 
 LICENSE="GPL-2 LGPL-2.1"
-KEYWORDS="-*"
+KEYWORDS=""
 
 RDEPEND=">=sys-libs/zlib-1.1.4
 	|| ( >=sys-devel/gcc-config-1.3.12-r4 app-admin/eselect-compiler )
