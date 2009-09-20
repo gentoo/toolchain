@@ -24,11 +24,11 @@ PRERELEASE="yes"
 RDEPEND=">=sys-libs/zlib-1.1.4
 	>=sys-devel/gcc-config-1.4
 	virtual/libiconv
-	>=dev-libs/gmp-4.2.2
-	>=dev-libs/mpfr-2.3.0
+	>=dev-libs/gmp-4.2.1
+	>=dev-libs/mpfr-2.3.2
 	graphite? (
-		 >=dev-libs/ppl-0.10
-		 >=dev-libs/cloog-ppl-0.15.4
+		>=dev-libs/ppl-0.10
+		>=dev-libs/cloog-ppl-0.15.4
 	)
 	!build? (
 		gcj? (
@@ -58,7 +58,7 @@ DEPEND="${RDEPEND}
 PDEPEND=">=sys-devel/gcc-config-1.4"
 
 if [[ ${CATEGORY} != cross-* ]] ; then
-	DEPEND="${DEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
+	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
 fi
 
 pkg_setup() {
