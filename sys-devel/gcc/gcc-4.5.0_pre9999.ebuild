@@ -16,7 +16,7 @@ SRC_URI=""
 
 IUSE="offline debug"
 
-LICENSE="GPL-3 LGPL-3"
+LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
 SLOT="${GCC_BRANCH_VER}-svn"
 SPLIT_SPECS="no"
 PRERELEASE="yes"
