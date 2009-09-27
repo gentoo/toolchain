@@ -68,7 +68,6 @@ pkg_setup() {
 	fi
 
 	toolchain_pkg_setup
-	append-ldflags -Wl,--no-as-needed	# PR 40928
 }
 
 src_unpack() {
