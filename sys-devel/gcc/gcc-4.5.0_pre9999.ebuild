@@ -14,7 +14,7 @@ HOMEPAGE="http://gcc.gnu.org/"
 ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/trunk"
 SRC_URI=""
 
-IUSE="offline debug"
+IUSE="debug lto offline"
 
 LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
 SLOT="${GCC_BRANCH_VER}-svn"
@@ -31,6 +31,7 @@ RDEPEND=">=sys-libs/zlib-1.1.4
 		 >=dev-libs/ppl-0.10
 		 >=dev-libs/cloog-ppl-0.15.4
 	)
+	lto? ( dev-libs/elfutils )
 	!build? (
 		gcj? (
 			gtk? (
@@ -158,6 +159,7 @@ src_unpack() {
 	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 
 	use debug && EXTRA_ECONF="${EXTRA_ECONF} --enable-checking"
+	use lto && EXTRA_ECONF="${EXTRA_ECONF} $(use_enable lto)"
 }
 
 # since GCC 4.4 supports parallel make check
