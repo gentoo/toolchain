@@ -89,7 +89,6 @@ src_unpack() {
 	subversion_wc_info
 	echo ${PV/_/-} > "${S}"/gcc/BASE-VER
 	echo "rev. ${ESVN_WC_REVISION}" > "${S}"/gcc/REVISION
-	echo "built $(date "+%Y%m%d")" > "${S}"/gcc/DATESTAMP
 
 	if ! use vanilla ; then
 		EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
