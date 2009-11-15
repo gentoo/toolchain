@@ -9,33 +9,48 @@ inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
 
-LICENSE="GPL-2 LGPL-2.1"
+LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
 KEYWORDS=""
 
 RDEPEND=">=sys-libs/zlib-1.1.4
-	|| ( >=sys-devel/gcc-config-1.3.12-r4 app-admin/eselect-compiler )
+	>=sys-devel/gcc-config-1.4
 	virtual/libiconv
-	>=dev-libs/gmp-4.2.1
-	>=dev-libs/mpfr-2.3
+	>=dev-libs/gmp-4.2.2
+	>=dev-libs/mpfr-2.3.2
+	>=dev-libs/mpc-0.7
+	graphite? (
+		>=dev-libs/ppl-0.10
+		>=dev-libs/cloog-ppl-0.15.4
+	)
 	!build? (
 		gcj? (
 			gtk? (
-				|| ( ( x11-libs/libXt x11-libs/libX11 x11-libs/libXtst x11-proto/xproto x11-proto/xextproto ) virtual/x11 )
+				x11-libs/libXt
+				x11-libs/libX11
+				x11-libs/libXtst
+				x11-proto/xproto
+				x11-proto/xextproto
 				>=x11-libs/gtk+-2.2
 				x11-libs/pango
 			)
 			>=media-libs/libart_lgpl-2.1
+			app-arch/zip
+			app-arch/unzip
 		)
 		>=sys-libs/ncurses-5.2-r2
 		nls? ( sys-devel/gettext )
 	)"
 DEPEND="${RDEPEND}
-	>=sys-apps/texinfo-4.2-r4
+	test? ( >=dev-util/dejagnu-1.4.4 >=sys-devel/autogen-5.5.4 )
+	>=sys-apps/texinfo-4.8
 	>=sys-devel/bison-1.875
-	>=${CATEGORY}/binutils-2.16.1"
-PDEPEND="|| ( sys-devel/gcc-config app-admin/eselect-compiler )"
+	>=sys-devel/flex-2.5.4
+	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
+	>=${CATEGORY}/binutils-2.18"
+PDEPEND=">=sys-devel/gcc-config-1.4"
+
 if [[ ${CATEGORY} != cross-* ]] ; then
-	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.3.6 )"
+	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
 fi
 
 pkg_setup() {

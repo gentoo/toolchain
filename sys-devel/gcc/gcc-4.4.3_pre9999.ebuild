@@ -7,9 +7,7 @@ GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
 inherit toolchain subversion
 
-KEYWORDS=""
-
-DESCRIPTION="The GNU Compiler Collection."
+DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
 HOMEPAGE="http://gcc.gnu.org/"
 ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_4-branch"
 SRC_URI=""
@@ -17,6 +15,7 @@ SRC_URI=""
 IUSE="offline debug"
 
 LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
+KEYWORDS=""
 SLOT="${GCC_BRANCH_VER}-svn"
 SPLIT_SPECS="no"
 PRERELEASE="yes"
@@ -65,7 +64,6 @@ pkg_setup() {
 	if [[ -z ${I_PROMISE_TO_SUPPLY_PATCHES_WITH_BUGS} ]] ; then
 		die "Please \`export I_PROMISE_TO_SUPPLY_PATCHES_WITH_BUGS=1\` or define it in your make.conf if you want to use this ebuild.  This is to try and cut down on people filing bugs for a compiler we do not currently support."
 	fi
-
 	toolchain_pkg_setup
 }
 
@@ -155,19 +153,22 @@ src_unpack() {
 
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
 	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${GCC_FILESDIR}"/4.4.0/gcc-4.4.0-softfloat.patch
+	# Fix cross-compiling
 	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 
-	use debug && EXTRA_ECONF="${EXTRA_ECONF} --enable-checking"
-}
-
-# since GCC 4.4 supports parallel make check
-# override toolchain.eclass' src_test which forces -j1
-src_test() {
-	cd "${WORKDIR}"/build
-	emake -k check
+	EXTRA_ECONF="$(use_enable debug checking) ${EXTRA_ECONF}"
 }
 
 pkg_preinst() {
 	toolchain_pkg_preinst
 	subversion_pkg_preinst
+}
+
+pkg_postinst() {
+	toolchain_pkg_postinst
+
+	einfo "This gcc-4 ebuild is provided for your convenience, and the use"
+	einfo "of this compiler is not supported by the Gentoo Developers."
+	einfo "Please file bugs related to gcc-4 with upstream developers."
+	einfo "Compiler bugs should be filed at http://gcc.gnu.org/bugzilla/"
 }
