@@ -5,7 +5,7 @@
 ETYPE="gcc-compiler"
 GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
-inherit toolchain subversion
+inherit multilib subversion toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
 HOMEPAGE="http://gcc.gnu.org/"
@@ -160,6 +160,18 @@ src_unpack() {
 	EXTRA_ECONF="$(use_enable lto) ${EXTRA_ECONF}"
 }
 
+src_install() {
+	toolchain_src_install
+
+	# Move pretty-printers to gdb datadir to shut ldconfig up
+	gdbdir=/usr/share/gdb/auto-load
+	for module in $(find "${D}" -iname "*-gdb.py" -print); do 
+		insinto ${gdbdir}/$(dirname "${module/${D}/}" | sed -e "s:/lib/:/$(get_libdir)/:g")
+		doins "${module}"
+		rm "${module}"
+	done
+}
+	
 pkg_preinst() {
 	toolchain_pkg_preinst
 	subversion_pkg_preinst
