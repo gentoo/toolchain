@@ -28,9 +28,9 @@ RDEPEND=">=sys-libs/zlib-1.1.4
 	>=dev-libs/mpc-0.8
 	graphite? (
 		>=dev-libs/ppl-0.10
-		>=dev-libs/cloog-ppl-0.15.4
+		>=dev-libs/cloog-ppl-0.15.8
 	)
-	lto? ( dev-libs/elfutils )
+	lto? ( >=dev-libs/elfutils-0.143 )
 	!build? (
 		gcj? (
 			gtk? (
@@ -165,13 +165,13 @@ src_install() {
 
 	# Move pretty-printers to gdb datadir to shut ldconfig up
 	gdbdir=/usr/share/gdb/auto-load
-	for module in $(find "${D}" -iname "*-gdb.py" -print); do 
+	for module in $(find "${D}" -iname "*-gdb.py" -print); do
 		insinto ${gdbdir}/$(dirname "${module/${D}/}" | sed -e "s:/lib/:/$(get_libdir)/:g")
 		doins "${module}"
 		rm "${module}"
 	done
 }
-	
+
 pkg_preinst() {
 	toolchain_pkg_preinst
 	subversion_pkg_preinst
