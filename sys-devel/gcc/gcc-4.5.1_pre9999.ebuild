@@ -23,9 +23,9 @@ PRERELEASE="yes"
 RDEPEND=">=sys-libs/zlib-1.1.4
 	>=sys-devel/gcc-config-1.4
 	virtual/libiconv
-	>=dev-libs/gmp-4.2.2
-	>=dev-libs/mpfr-2.3.2
-	>=dev-libs/mpc-0.8
+	>=dev-libs/gmp-4.3.2
+	>=dev-libs/mpfr-2.4.2
+	>=dev-libs/mpc-0.8.1
 	graphite? (
 		>=dev-libs/ppl-0.10
 		>=dev-libs/cloog-ppl-0.15.8
