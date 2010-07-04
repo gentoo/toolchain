@@ -157,19 +157,10 @@ src_unpack() {
 	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 
 	EXTRA_ECONF="$(use_enable debug checking) ${EXTRA_ECONF}"
-	EXTRA_ECONF="$(use_enable lto) ${EXTRA_ECONF}"
 }
 
 src_install() {
 	toolchain_src_install
-
-	# Move pretty-printers to gdb datadir to shut ldconfig up
-	gdbdir=/usr/share/gdb/auto-load
-	for module in $(find "${D}" -iname "*-gdb.py" -print); do
-		insinto ${gdbdir}/$(dirname "${module/${D}/}" | sed -e "s:/lib/:/$(get_libdir)/:g")
-		doins "${module}"
-		rm "${module}"
-	done
 }
 
 pkg_preinst() {
