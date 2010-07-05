@@ -13,7 +13,7 @@ LICENSE="GPL-2 LGPL-2.1"
 KEYWORDS=""
 
 RDEPEND=">=sys-libs/zlib-1.1.4
-	|| ( >=sys-devel/gcc-config-1.3.12-r4 app-admin/eselect-compiler )
+	>=sys-devel/gcc-config-1.3.12-r4
 	virtual/libiconv
 	>=dev-libs/gmp-4.2.1
 	>=dev-libs/mpfr-2.3
@@ -33,7 +33,7 @@ DEPEND="${RDEPEND}
 	>=sys-apps/texinfo-4.2-r4
 	>=sys-devel/bison-1.875
 	>=${CATEGORY}/binutils-2.16.1"
-PDEPEND="|| ( sys-devel/gcc-config app-admin/eselect-compiler )"
+PDEPEND="sys-devel/gcc-config"
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.3.6 )"
 fi

@@ -46,7 +46,7 @@ DEPEND="${RDEPEND}
 	>=sys-devel/flex-2.5.4
 	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
 	>=${CATEGORY}/binutils-2.18"
-PDEPEND="|| ( sys-devel/gcc-config app-admin/eselect-compiler )"
+PDEPEND="sys-devel/gcc-config"
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
 fi
