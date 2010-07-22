@@ -156,7 +156,7 @@ src_unpack() {
 	# Fix cross-compiling
 	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 
-	EXTRA_ECONF="$(use_enable debug checking) ${EXTRA_ECONF}"
+	use debug && GCC_CHECKS_LIST="yes"
 }
 
 pkg_preinst() {
