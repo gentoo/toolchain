@@ -118,9 +118,14 @@ src_unpack() {
 	fi
 
 	# >= gcc-4.3 doesn't bundle ecj.jar, so copy it
-	if [[ ${GCCMAJOR}.${GCCMINOR} > 4.2 ]] &&
-		use gcj ; then
-		cp -pPR "${DISTDIR}/ecj-4.3.jar" "${S}/ecj.jar" || die
+	if [[ ${GCCMAJOR}.${GCCMINOR} > 4.2 ]] && use gcj ; then
+		if tc_version_is_at_least "4.5" ; then
+			einfo "Copying ecj-4.5.jar"
+			cp -pPR "${DISTDIR}/ecj-4.5.jar" "${S}/ecj.jar" || die
+		elif tc_version_is_at_least "4.3" ; then
+			einfo "Copying ecj-4.3.jar"
+			cp -pPR "${DISTDIR}/ecj-4.3.jar" "${S}/ecj.jar" || die
+		fi
 	fi
 
 	# Fixup libtool to correctly generate .la files with portage
