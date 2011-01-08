@@ -148,8 +148,6 @@ src_unpack() {
 
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
 	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${GCC_FILESDIR}"/4.4.0/gcc-4.4.0-softfloat.patch
-	# Fix cross-compiling
-	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 
 	use debug && GCC_CHECKS_LIST="yes"
 }
