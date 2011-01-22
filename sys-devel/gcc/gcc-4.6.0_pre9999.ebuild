@@ -28,7 +28,7 @@ RDEPEND=">=sys-libs/zlib-1.1.4
 	>=dev-libs/mpc-0.8.1
 	graphite? (
 		>=dev-libs/cloog-ppl-0.15.10
-		>=dev-libs/ppl-0.10
+		>=dev-libs/ppl-0.11
 		)
 	!build? (
 		gcj? (
@@ -57,7 +57,8 @@ DEPEND="${RDEPEND}
 	>=sys-devel/flex-2.5.4
 	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
 	>=${CATEGORY}/binutils-2.18"
-PDEPEND=">=sys-devel/gcc-config-1.4"
+PDEPEND=">=sys-devel/gcc-config-1.4
+	go? ( >=sys-devel/gcc-config-1.5 )"
 
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
