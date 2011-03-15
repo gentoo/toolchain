@@ -9,7 +9,7 @@ inherit multilib subversion toolchain
 
 DESCRIPTION="The GNU Compiler Collection."
 HOMEPAGE="http://gcc.gnu.org/"
-ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/trunk"
+ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_6-branch"
 SRC_URI="gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )"
 
 IUSE="debug offline"
