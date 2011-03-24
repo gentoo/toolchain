@@ -100,16 +100,7 @@ src_unpack() {
 
 	${ETYPE}_src_unpack || die "failed to ${ETYPE}_src_unpack"
 
-	fix_files=""
-	for x in contrib/test_summary libstdc++-v3/scripts/check_survey.in ; do
-		[[ -e ${x} ]] && fix_files="${fix_files} ${x}"
-	done
-	ht_fix_file ${fix_files} */configure *.sh */Makefile.in
-
-	if ! is_crosscompile && is_multilib && \
-		[[ ( $(tc-arch) == "amd64" || $(tc-arch) == "ppc64" ) && -z ${SKIP_MULTILIB_HACK} ]] ; then
-			disgusting_gcc_multilib_HACK || die "multilib hack failed"
-	fi
+	setup_multilib_osdirnames
 
 	# >= gcc-4.3 doesn't bundle ecj.jar, so copy it
 	if [[ ${GCCMAJOR}.${GCCMINOR} > 4.2 ]] && use gcj ; then
