@@ -9,7 +9,7 @@ if [ ! -e metadata.xml ] ; then
 	exit 1
 fi
 
-export FEATURES="assume-digests -strict"
+export FEATURES="assume-digests -strict digest"
 
 date
 
