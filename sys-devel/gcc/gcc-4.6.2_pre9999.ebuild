@@ -12,7 +12,7 @@ HOMEPAGE="http://gcc.gnu.org/"
 ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_6-branch"
 SRC_URI="gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )"
 
-IUSE="debug offline"
+IUSE="debug nobootstrap offline"
 
 LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
 KEYWORDS=""
@@ -90,10 +90,12 @@ src_unpack() {
 	echo "rev. ${ESVN_WC_REVISION}" > "${S}"/gcc/REVISION
 
 	if ! use vanilla ; then
-		EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
-		EPATCH_EXCLUDE="${FILESDIR}/${GCC_RELEASE_VER}/exclude" \
-		EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch \
-		|| die "Failed during patching."
+		if [[ -e ${FILESDIR}/${GCC_RELEASE_VER} ]]; then
+			EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
+			EPATCH_EXCLUDE="${FILESDIR}/${GCC_RELEASE_VER}/exclude" \
+			EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch \
+			|| die "Failed during patching."
+		fi
 	fi
 
 	epatch_user
@@ -145,6 +147,12 @@ src_unpack() {
 	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${GCC_FILESDIR}"/4.4.0/gcc-4.4.0-softfloat.patch
 
 	use debug && GCC_CHECKS_LIST="yes"
+
+	# single-stage build for quick patch testing
+	if use nobootstrap; then
+		GCC_MAKE_TARGET="all"
+		EXTRA_ECONF+="--disable-bootstrap"
+	fi
 }
 
 src_install() {
