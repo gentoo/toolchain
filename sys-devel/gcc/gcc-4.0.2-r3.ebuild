@@ -11,8 +11,6 @@ PIE_GCC_VER="4.0.0"
 PP_VER=""
 HTB_VER="1.00"
 
-ETYPE="gcc-compiler"
-
 # bug #118361 and bug #108231
 # I will remove them on the next revbump, unless a better fix is made by then
 # - Halcy0n
@@ -58,7 +56,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 
 	use vanilla && return 0
 

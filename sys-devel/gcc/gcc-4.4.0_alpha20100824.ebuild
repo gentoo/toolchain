@@ -2,7 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/gcc-4.3.0_alpha20070112.ebuild,v 1.1 2007/01/18 05:13:42 vapier Exp $
 
-ETYPE="gcc-compiler"
 GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
 inherit toolchain
@@ -59,7 +58,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 
 	use vanilla && return 0
 

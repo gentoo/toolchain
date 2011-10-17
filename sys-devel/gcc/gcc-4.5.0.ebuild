@@ -5,8 +5,6 @@
 PATCH_VER="1.4"
 UCLIBC_VER="1.0"
 
-ETYPE="gcc-compiler"
-
 # Hardened gcc 4 stuff
 PIE_VER="0.4.5"
 SPECS_VER="0.2.0"
@@ -70,7 +68,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 
 	use vanilla && return 0
 

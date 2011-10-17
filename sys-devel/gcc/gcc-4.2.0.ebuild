@@ -5,8 +5,6 @@
 PATCH_VER="1.4"
 UCLIBC_VER="1.0"
 
-ETYPE="gcc-compiler"
-
 # whether we should split out specs files for multiple {PIE,SSP}-by-default
 # and vanilla configurations.
 SPLIT_SPECS=no #${SPLIT_SPECS-true} hard disable until #106690 is fixed
@@ -54,7 +52,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 
 	use vanilla && return 0
 

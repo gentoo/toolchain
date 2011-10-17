@@ -2,7 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-ETYPE="gcc-compiler"
 GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
 inherit multilib subversion toolchain

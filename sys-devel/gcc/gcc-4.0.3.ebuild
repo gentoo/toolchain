@@ -8,8 +8,6 @@ PIE_VER="8.7.8"
 PP_VER=""
 HTB_VER="1.00"
 
-ETYPE="gcc-compiler"
-
 # bug #126609
 GENTOO_PATCH_EXCLUDE="33_all_gcc4-pr16104.patch"
 
@@ -57,7 +55,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 
 	use vanilla && return 0
 

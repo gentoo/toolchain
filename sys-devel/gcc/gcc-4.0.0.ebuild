@@ -9,8 +9,6 @@ PIE_VER="8.7.8"
 PP_VER=""
 HTB_VER="1.00"
 
-ETYPE="gcc-compiler"
-
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
@@ -50,7 +48,7 @@ DEPEND="${RDEPEND}
 PDEPEND="sys-devel/gcc-config"
 
 src_unpack() {
-	gcc_src_unpack
+	toolchain_src_unpack
 	cd "${S}"
 	[[ ! -e /root/gcc4/list ]] && return 0
 	for x in $(</root/gcc4/list) ; do
