@@ -12,40 +12,13 @@ HTB_VER="1.00"
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
-HOMEPAGE="http://www.gnu.org/software/gcc/gcc.html"
 
 LICENSE="GPL-2 LGPL-2.1"
-KEYWORDS="-*"
+KEYWORDS=""
 
-RDEPEND=">=sys-devel/gcc-config-1.3.1
-	>=sys-libs/zlib-1.1.4
-	!sys-devel/hardened-gcc
-	!elibc_uclibc? (
-		>=sys-libs/glibc-2.3.3_pre20040420-r1
-		hardened? ( >=sys-libs/glibc-2.3.3_pre20040529 )
-	)
-	amd64? ( multilib? ( >=app-emulation/emul-linux-x86-glibc-1.1 ) )
-	fortran? ( dev-libs/gmp )
-	!build? (
-		gcj? (
-			gtk? ( >=x11-libs/gtk+-2.2 )
-			>=media-libs/libart_lgpl-2.1
-		)
-		>=sys-libs/ncurses-5.2-r2
-		nls? ( sys-devel/gettext )
-	)"
-
-
-if [[ ${CATEGORY/cross-} != ${CATEGORY} ]]; then
-	RDEPEND="${RDEPEND} ${CATEGORY}/binutils"
-fi
-
+RDEPEND=""
 DEPEND="${RDEPEND}
-	>=sys-apps/texinfo-4.2-r4
-	>=sys-devel/bison-1.875
 	>=sys-devel/binutils-2.15.97"
-
-PDEPEND="sys-devel/gcc-config"
 
 src_unpack() {
 	toolchain_src_unpack

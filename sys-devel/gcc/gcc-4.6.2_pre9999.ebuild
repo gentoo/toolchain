@@ -7,7 +7,6 @@ GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 inherit multilib subversion toolchain
 
 DESCRIPTION="The GNU Compiler Collection."
-HOMEPAGE="http://gcc.gnu.org/"
 ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_6-branch"
 SRC_URI="gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )"
 
@@ -19,45 +18,11 @@ SLOT="${GCC_BRANCH_VER}-svn"
 SPLIT_SPECS="no"
 PRERELEASE="yes"
 
-RDEPEND=">=sys-libs/zlib-1.1.4
-	>=sys-devel/gcc-config-1.4
-	virtual/libiconv
-	>=dev-libs/gmp-4.3.2
-	>=dev-libs/mpfr-2.4.2
-	>=dev-libs/mpc-0.8.1
-	graphite? (
-		>=dev-libs/cloog-ppl-0.15.10
-		>=dev-libs/ppl-0.11
-		)
-	!build? (
-		gcj? (
-			gtk? (
-				x11-libs/libXt
-				x11-libs/libX11
-				x11-libs/libXtst
-				x11-proto/xproto
-				x11-proto/xextproto
-				>=x11-libs/gtk+-2.2
-				x11-libs/pango
-			)
-			>=media-libs/libart_lgpl-2.1
-			app-arch/zip
-			app-arch/unzip
-		)
-		nls? ( sys-devel/gettext )
-	)"
+RDEPEND=""
 DEPEND="${RDEPEND}
-	test? (
-		>=dev-util/dejagnu-1.4.4
-		>=sys-devel/autogen-5.5.4
-	)
-	>=sys-apps/texinfo-4.8
-	>=sys-devel/bison-1.875
-	>=sys-devel/flex-2.5.4
 	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
 	>=${CATEGORY}/binutils-2.18"
-PDEPEND=">=sys-devel/gcc-config-1.4
-	go? ( >=sys-devel/gcc-config-1.5 )"
+PDEPEND="go? ( >=sys-devel/gcc-config-1.5 )"
 
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
