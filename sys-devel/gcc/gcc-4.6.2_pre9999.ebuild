@@ -10,13 +10,14 @@ DESCRIPTION="The GNU Compiler Collection."
 ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_6-branch"
 SRC_URI="gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )"
 
+LICENSE="GPL-3 LGPL-3 || ( GPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.2"
+KEYWORDS=""
+
+SLOT="${GCC_BRANCH_VER}-svn"
 IUSE="debug nobootstrap offline"
 
-LICENSE="GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1"
-KEYWORDS=""
-SLOT="${GCC_BRANCH_VER}-svn"
 SPLIT_SPECS="no"
-PRERELEASE="yes"
+GCC_SVN="yes"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -47,12 +48,13 @@ src_unpack() {
 	subversion_src_unpack
 
 	cd "${S}"
-	gcc_version_patch
 
 	subversion_wc_info
-	echo ${PV/_/-} > "${S}"/gcc/BASE-VER
 	echo "rev. ${ESVN_WC_REVISION}" > "${S}"/gcc/REVISION
 
+	toolchain_src_unpack
+
+	# drop-in patches
 	if ! use vanilla ; then
 		if [[ -e ${FILESDIR}/${GCC_RELEASE_VER} ]]; then
 			EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
@@ -62,53 +64,7 @@ src_unpack() {
 		fi
 	fi
 
-	epatch_user
-
-	${ETYPE}_src_unpack || die "failed to ${ETYPE}_src_unpack"
-
-	setup_multilib_osdirnames
-
-	# >= gcc-4.3 doesn't bundle ecj.jar, so copy it
-	if [[ ${GCCMAJOR}.${GCCMINOR} > 4.2 ]] && use gcj ; then
-		if tc_version_is_at_least "4.5" ; then
-			einfo "Copying ecj-4.5.jar"
-			cp -pPR "${DISTDIR}/ecj-4.5.jar" "${S}/ecj.jar" || die
-		elif tc_version_is_at_least "4.3" ; then
-			einfo "Copying ecj-4.3.jar"
-			cp -pPR "${DISTDIR}/ecj-4.3.jar" "${S}/ecj.jar" || die
-		fi
-	fi
-
-	# Fixup libtool to correctly generate .la files with portage
-	cd "${S}"
-	elibtoolize --portage --shallow --no-uclibc
-
-	gnuconfig_update
-
-	# update configure files
-	local f
-	einfo "Fixing misc issues in configure files"
-	tc_version_is_at_least 4.1 && epatch "${GCC_FILESDIR}"/gcc-configure-texinfo.patch
-	for f in $(grep -l 'autoconf version 2.13' $(find "${S}" -name configure)) ; do
-		ebegin "  Updating ${f/${S}\/} [LANG]"
-		patch "${f}" "${GCC_FILESDIR}"/gcc-configure-LANG.patch >& "${T}"/configure-patch.log \
-			|| eerror "Please file a bug about this"
-		eend $?
-	done
-	sed -i 's|A-Za-z0-9|[:alnum:]|g' "${S}"/gcc/*.awk #215828
-
-	if [[ -x contrib/gcc_update ]] ; then
-		einfo "Touching generated files"
-		./contrib/gcc_update --touch | \
-			while read f ; do
-				einfo "  ${f%%...}"
-			done
-	fi
-
-	disable_multilib_libjava || die "failed to disable multilib java"
-
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
-	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${GCC_FILESDIR}"/4.4.0/gcc-4.4.0-softfloat.patch
 
 	use debug && GCC_CHECKS_LIST="yes"
 
