@@ -15,10 +15,6 @@ UCLIBC_VER="1.1"
 #SSP_STABLE="amd64 x86 ppc ppc64 ~arm ~sparc"
 #SSP_UCLIBC_STABLE=""
 
-# whether we should split out specs files for multiple {PIE,SSP}-by-default
-# and vanilla configurations.
-SPLIT_SPECS=no #${SPLIT_SPECS-true} hard disable until #106690 is fixed
-
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"

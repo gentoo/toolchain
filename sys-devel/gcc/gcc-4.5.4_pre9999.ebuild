@@ -16,7 +16,6 @@ KEYWORDS=""
 SLOT="${GCC_BRANCH_VER}-svn"
 IUSE="debug nobootstrap offline"
 
-SPLIT_SPECS="no"
 GCC_SVN="yes"
 
 RDEPEND=""

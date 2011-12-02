@@ -16,10 +16,6 @@ HTB_VER="1.00"
 # - Halcy0n
 GENTOO_PATCH_EXCLUDE="30_all_gcc4-pr22252.patch 35_all_gcc41-pr25010.patch"
 
-# whether we should split out specs files for multiple {PIE,SSP}-by-default
-# and vanilla configurations.
-SPLIT_SPECS=no #${SPLIT_SPECS-true} hard disable until #106690 is fixed
-
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
