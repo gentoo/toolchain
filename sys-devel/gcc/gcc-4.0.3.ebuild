@@ -8,9 +8,6 @@ PIE_VER="8.7.8"
 PP_VER=""
 HTB_VER="1.00"
 
-# bug #126609
-GENTOO_PATCH_EXCLUDE="33_all_gcc4-pr16104.patch"
-
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"

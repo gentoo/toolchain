@@ -11,11 +11,6 @@ PIE_GCC_VER="4.0.0"
 PP_VER=""
 HTB_VER="1.00"
 
-# bug #118361 and bug #108231
-# I will remove them on the next revbump, unless a better fix is made by then
-# - Halcy0n
-GENTOO_PATCH_EXCLUDE="30_all_gcc4-pr22252.patch 35_all_gcc41-pr25010.patch"
-
 inherit toolchain
 
 DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
