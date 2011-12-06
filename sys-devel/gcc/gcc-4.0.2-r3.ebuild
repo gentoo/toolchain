@@ -6,9 +6,6 @@ PATCH_VER="1.6"
 PATCH_GCC_VER="4.0.2"
 UCLIBC_VER="1.0"
 UCLIBC_GCC_VER="4.0.0"
-PIE_VER="8.7.8"
-PIE_GCC_VER="4.0.0"
-PP_VER=""
 HTB_VER="1.00"
 
 inherit toolchain

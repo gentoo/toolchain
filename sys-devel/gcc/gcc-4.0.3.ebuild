@@ -4,8 +4,6 @@
 
 PATCH_VER="1.3"
 UCLIBC_VER="1.0"
-PIE_VER="8.7.8"
-PP_VER=""
 HTB_VER="1.00"
 
 inherit toolchain
