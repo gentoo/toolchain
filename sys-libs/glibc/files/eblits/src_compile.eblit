@@ -19,7 +19,6 @@ glibc_do_configure() {
 	[[ -d ports ]] && ADDONS="${ADDONS},ports"
 	popd > /dev/null
 
-	use nls || myconf="${myconf} --disable-nls"
 	myconf="${myconf} $(use_enable hardened stackguard-randomization)"
 	if [[ $(<"${T}"/.ssp.compat) == "yes" ]] ; then
 		myconf="${myconf} --enable-old-ssp-compat"

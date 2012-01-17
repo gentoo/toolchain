@@ -25,7 +25,7 @@ LT_VER=""                                      # version of linuxthreads addon
 NPTL_KERN_VER=${NPTL_KERN_VER:-"2.6.9"}        # min kernel version nptl requires
 #LT_KERN_VER=${LT_KERN_VER:-"2.4.1"}           # min kernel version linuxthreads requires
 
-IUSE="debug gd glibc-omitfp hardened multilib nls selinux profile vanilla crosscompile_opts_headers-only ${LT_VER:+glibc-compat20 nptl nptlonly}"
+IUSE="debug gd glibc-omitfp hardened multilib selinux profile vanilla crosscompile_opts_headers-only ${LT_VER:+glibc-compat20 nptl nptlonly}"
 S=${WORKDIR}/glibc-${RELEASE_VER}
 
 # Here's how the cross-compile logic breaks down ...
@@ -83,12 +83,10 @@ DEPEND=">=sys-devel/gcc-3.4.4
 	>=sys-devel/gcc-config-1.3.12
 	>=app-misc/pax-utils-0.1.10
 	virtual/os-headers
-	nls? ( sys-devel/gettext )
 	>=sys-apps/sandbox-1.2.18.1-r2
 	!<sys-apps/portage-2.1.2
 	selinux? ( sys-libs/libselinux )"
-RDEPEND="nls? ( sys-devel/gettext )
-	selinux? ( sys-libs/libselinux )"
+RDEPEND="selinux? ( sys-libs/libselinux )"
 
 if [[ ${CATEGORY/cross-} != ${CATEGORY} ]] ; then
 	DEPEND="${DEPEND} !crosscompile_opts_headers-only? ( ${CATEGORY}/gcc )"

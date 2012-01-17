@@ -39,7 +39,7 @@ DESCRIPTION="GNU libc6 (also called glibc2) C library"
 HOMEPAGE="http://www.gnu.org/software/libc/libc.html"
 LICENSE="LGPL-2"
 
-IUSE="nls build nptl nptlonly erandom hardened multilib selinux glibc-compat20 glibc-omitfp profile"
+IUSE="build nptl nptlonly erandom hardened multilib selinux glibc-compat20 glibc-omitfp profile"
 
 export CBUILD=${CBUILD:-${CHOST}}
 export CTARGET=${CTARGET:-${CHOST}}
@@ -834,7 +834,6 @@ glibc_do_configure() {
 	popd > /dev/null
 	use glibc-compat20 && [[ -d glibc-compat ]] && ADDONS="${ADDONS},glibc-compat"
 
-	use nls || myconf="${myconf} --disable-nls"
 	use erandom || myconf="${myconf} --disable-dev-erandom"
 
 	use glibc-omitfp && myconf="${myconf} --enable-omitfp"
@@ -1008,10 +1007,8 @@ DEPEND="!ia64? ( >=sys-devel/gcc-3.4 )
 	>=sys-devel/gcc-config-1.3.12
 	>=app-misc/pax-utils-0.1.10
 	virtual/os-headers
-	nls? ( sys-devel/gettext )
 	selinux? ( !build? ( sys-libs/libselinux ) )"
-RDEPEND="nls? ( sys-devel/gettext )
-	selinux? ( !build? ( sys-libs/libselinux ) )"
+RDEPEND="selinux? ( !build? ( sys-libs/libselinux ) )"
 
 if [[ ${CATEGORY/cross-} != ${CATEGORY} ]] ; then
 	DEPEND="${DEPEND} !crosscompile_opts_headers-only? ( ${CATEGORY}/gcc )"

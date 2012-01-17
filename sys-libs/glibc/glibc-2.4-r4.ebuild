@@ -52,7 +52,7 @@ LICENSE="LGPL-2"
 
 # note that nptl/nptlonly/glibc-compat20 are for upgrade checks only.
 # we dont generally support these things in this version.
-IUSE="nls build nptl nptlonly hardened multilib selinux glibc-omitfp profile glibc-compat20"
+IUSE="build nptl nptlonly hardened multilib selinux glibc-omitfp profile glibc-compat20"
 
 export CBUILD=${CBUILD:-${CHOST}}
 export CTARGET=${CTARGET:-${CHOST}}
@@ -843,7 +843,6 @@ glibc_do_configure() {
 		esac
 	fi
 
-	use nls || myconf="${myconf} --disable-nls"
 	myconf="${myconf} $(use_enable hardened stackguard-randomization)"
 	if [[ $(<"${T}"/.ssp.compat) == "yes" ]] ; then
 		myconf="${myconf} --enable-old-ssp-compat"
@@ -1027,10 +1026,8 @@ DEPEND=">=sys-devel/gcc-3.4.4
 	>=sys-devel/gcc-config-1.3.12
 	>=app-misc/pax-utils-0.1.10
 	virtual/os-headers
-	nls? ( sys-devel/gettext )
 	selinux? ( !build? ( sys-libs/libselinux ) )"
-RDEPEND="nls? ( sys-devel/gettext )
-	selinux? ( !build? ( sys-libs/libselinux ) )"
+RDEPEND="selinux? ( !build? ( sys-libs/libselinux ) )"
 
 if [[ ${CATEGORY/cross-} != ${CATEGORY} ]] ; then
 	DEPEND="${DEPEND} !crosscompile_opts_headers-only? ( ${CATEGORY}/gcc )"
