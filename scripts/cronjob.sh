@@ -4,16 +4,16 @@ cd "${0%/*}"/..
 (
 svn up -q
 
-./scripts/update-gcc
-cd sys-devel/gcc
-svn add -q *
-svn commit -m 'update gcc snapshots'
-cd ../..
+doit() {
+	./scripts/update-$1
+	cd sys-devel/$1
+	svn add -q * || :
+	[[ -z $(svn st | grep -v '[^AM]') ]]
+	svn commit -m "update $1 snapshots"
+	cd ../..
+}
 
-./scripts/update-gdb
-cd sys-devel/gdb
-svn add -q *
-svn commit -m 'update gdb snapshots'
-cd ../..
+doit gcc
+doit gdb
 
 ) >& scripts/cronjob.log
