@@ -67,10 +67,6 @@ src_unpack() {
 	fi
 }
 
-src_install() {
-	toolchain_src_install
-}
-
 pkg_preinst() {
 	toolchain_pkg_preinst
 	subversion_pkg_preinst
