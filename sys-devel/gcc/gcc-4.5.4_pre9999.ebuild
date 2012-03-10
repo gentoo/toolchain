@@ -4,19 +4,16 @@
 
 GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
 
-inherit multilib subversion toolchain
+inherit multilib toolchain
 
 DESCRIPTION="The GNU Compiler Collection."
-ESVN_REPO_URI="svn://gcc.gnu.org/svn/gcc/branches/gcc-4_5-branch"
-SRC_URI="gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )"
+SRC_URI=""
 
 LICENSE="GPL-3 LGPL-3 || ( GPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.2"
 KEYWORDS=""
 
-SLOT="${GCC_BRANCH_VER}-svn"
+SLOT="${GCC_BRANCH_VER}-vcs"
 IUSE="debug nobootstrap offline"
-
-GCC_SVN="yes"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -28,22 +25,13 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	export BRANDING_GCC_PKGVERSION="Gentoo SVN"
-
-	[[ -z ${UCLIBC_VER} ]] && [[ ${CTARGET} == *-uclibc* ]] && die "Sorry, this version does not support uClibc"
-
 	# use the offline USE flag to prevent the ebuild from trying to update from
 	# the repo.  the current sources will be used instead.
 	use offline && ESVN_OFFLINE="yes"
 
-	subversion_src_unpack
-
-	cd "${S}"
-
-	subversion_wc_info
-	echo "rev. ${ESVN_WC_REVISION}" > "${S}"/gcc/REVISION
-
 	toolchain_src_unpack
+
+	echo "commit ${EGIT_VERSION}" > "${S}"/gcc/REVISION
 
 	# drop-in patches
 	if ! use vanilla ; then
@@ -66,16 +54,12 @@ src_unpack() {
 	fi
 }
 
-pkg_preinst() {
-	toolchain_pkg_preinst
-	subversion_pkg_preinst
-}
-
 pkg_postinst() {
 	toolchain_pkg_postinst
-
+	echo
 	einfo "This gcc-4 ebuild is provided for your convenience, and the use"
 	einfo "of this compiler is not supported by the Gentoo Developers."
 	einfo "Please file bugs related to gcc-4 with upstream developers."
 	einfo "Compiler bugs should be filed at http://gcc.gnu.org/bugzilla/"
+	echo
 }
