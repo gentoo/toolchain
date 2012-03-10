@@ -32,7 +32,6 @@ src_unpack() {
 
 	toolchain_src_unpack
 
-	echo ${PV} > "${S}"/gcc/BASE-VER
 	echo "commit ${EGIT_VERSION}" > "${S}"/gcc/REVISION
 
 	# drop-in patches
