@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/gcc-4.4.1.ebuild,v 1.13 2010/01/09 12:58:57 ulm Exp $
 

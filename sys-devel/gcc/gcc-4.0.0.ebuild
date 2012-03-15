@@ -1,4 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/Attic/gcc-4.0.0.ebuild,v 1.7 2005/07/08 19:07:22 eradicator dead $
 

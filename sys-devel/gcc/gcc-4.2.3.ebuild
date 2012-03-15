@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/Attic/gcc-4.2.3.ebuild,v 1.4 2009/02/15 23:12:46 vapier dead $
 
