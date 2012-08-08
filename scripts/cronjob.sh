@@ -7,6 +7,7 @@ set -e
 cd "${0%/*}"/..
 (
 # XXX: Maybe add broken lock/cleanup detection?
+svn revert -R .
 svn up -q
 
 doit() {
