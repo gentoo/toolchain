@@ -26,6 +26,17 @@ wget -nv --no-remove-listing -O /dev/null ftp://sources.redhat.com/pub/${PN}/sna
 l=".listing"
 sed -i 's/\r$//' ${l}
 
+# First unload ones that no longer exist.
+ebuilds=$(echo ${PN}-*_alpha*.ebuild)
+for e in ${ebuilds} ; do
+	v=$(echo "${e}" | sed -e 's:^gcc-::g' -e 's:.ebuild::g' -e 's:.._alpha:-:g')
+	if grep -q "\<${v}$" ${l} ; then
+		continue
+	fi
+	svn rm ${e}
+done
+
+# Then load new ones.
 majors=$(awk '$(NF-2) ~ /^LATEST-/ { print gensub("LATEST-", "", "", $(NF-2)) }' ${l})
 echo "${PN} majors:" ${majors}
 

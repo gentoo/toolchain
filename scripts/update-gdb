@@ -26,6 +26,17 @@ wget -nv --no-remove-listing -O /dev/null ftp://sources.redhat.com/pub/${PN}/sna
 l=".listing"
 sed -i 's/\r$//' ${l}
 
+# First unload ones that no longer exist.
+ebuilds=$(echo ${PN}-?.?.50.*.ebuild)
+for e in ${ebuilds} ; do
+	f=$(echo "${e}" | sed -e 's:^gdb-:gdb-weekly-:g' -e 's:.ebuild:.tar.bz2:g')
+	if grep -q "\<${f}$" ${l} ; then
+		continue
+	fi
+	svn rm ${e}
+done
+
+# Then load new ones.
 snaps=$(grep -o ${PN}-weekly-'[[:digit:]]'.*.tar.* ${l} | \
 	sed -e 's:.*-::' -e 's:.tar.*::')
 
