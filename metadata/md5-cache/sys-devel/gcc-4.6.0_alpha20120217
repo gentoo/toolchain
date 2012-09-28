@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm setup test unpack
+DEPEND=amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) ) >=sys-devel/binutils-2.18 sys-devel/gnuconfig >=sys-apps/sed-4 sys-libs/zlib !build? ( nls? ( sys-devel/gettext ) ) virtual/libiconv >=dev-libs/gmp-4.3.2 >=dev-libs/mpfr-2.4.2 >=dev-libs/mpc-0.8.1 graphite? ( >=dev-libs/cloog-ppl-0.15.10 >=dev-libs/ppl-0.11 ) >=sys-apps/texinfo-4.8 >=sys-devel/bison-1.875 >=sys-devel/flex-2.5.4 test? ( >=dev-util/dejagnu-1.4.4 >=sys-devel/autogen-5.5.4 ) gcj? ( gtk? ( x11-libs/libXt x11-libs/libX11 x11-libs/libXtst x11-proto/xproto x11-proto/xextproto =x11-libs/gtk+-2* x11-libs/pango ) >=media-libs/libart_lgpl-2.1 app-arch/zip app-arch/unzip )
+DESCRIPTION=The GNU Compiler Collection. Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking
+HOMEPAGE=http://gcc.gnu.org/
+IUSE=debug build multislot nls nptl test vanilla altivec cxx fortran nocxx bootstrap doc gcj gtk hardened multilib objc objc-gc mudflap libssp objc++ openmp fixed-point graphite go
+LICENSE=GPL-3 LGPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1
+PDEPEND=elibc_glibc? ( >=sys-libs/glibc-2.8 ) >=sys-devel/gcc-config-1.5
+RDEPEND=sys-libs/zlib !build? ( nls? ( sys-devel/gettext ) ) virtual/libiconv >=dev-libs/gmp-4.3.2 >=dev-libs/mpfr-2.4.2 >=dev-libs/mpc-0.8.1 graphite? ( >=dev-libs/cloog-ppl-0.15.10 >=dev-libs/ppl-0.11 )
+RESTRICT=strip
+SLOT=4.6
+SRC_URI=ftp://sources.redhat.com/pub/gcc/snapshots/4.6-20120217/gcc-4.6-20120217.tar.bz2 gcj? ( ftp://sourceware.org/pub/java/ecj-4.5.jar )
+_eclasses_=eutils	6e25eb368f2a449bd6f5f8b55eadba30	fixheadtails	f96922acc9287f1e889a1e50a6c8986e	flag-o-matic	2c938a1fe61ea9899a2b97ea1e065f5f	gnuconfig	c0f61749b1cea36288502e3497dcd6ac	libtool	2b273eea1976cfaed3449345d94331ac	multilib	c2b85b5c63a44798c1e442147ac14c5c	pax-utils	0ace932c4045349c7fc1af0fe7091acf	toolchain	3f26e784a01443b2255758a726d84354	toolchain-funcs	53a27e9e8acf42332c82a7838d84773f	user	d0a4d0735a6c0183d707ca919bd72f28	versionator	6601b4c5b3f019a993db59a50e1854e4
+_md5_=3e1fbda5d8b582e8895ec81736e102fc
