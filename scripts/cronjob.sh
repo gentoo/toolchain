@@ -40,8 +40,9 @@ doit() {
 doit gcc
 doit gdb
 
-egencache --repo=toolchain --update --portdir-overlay="${PWD}" -j ${NCPUS:-1}
-cd metadata
-svn_commit "update metadata"
+# Disable for now: egencache deletes .svn
+#egencache --repo=toolchain --update --portdir-overlay="${PWD}" -j ${NCPUS:-1}
+#cd metadata
+#svn_commit "update metadata"
 
 ) >& scripts/cronjob.log
