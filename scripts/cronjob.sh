@@ -21,12 +21,12 @@ svn_commit() {
 
 	local st=$(svn st .)
 
-	local d=$(echo "${st}" | awk '$1 == "!" { print $NF }')
+	local d=$(echo "${st}" | awk '$1 ~ /^[!?]/ { print $NF }')
 	if [[ -n ${d} ]] ; then
 		svn rm ${d}
 	fi
 
-	if [[ -n $(svn st . | grep -v '[^AM]') ]] ; then
+	if [[ -z $(svn st . | grep -v '[^AM]') ]] ; then
 		svn commit -m "$1" .
 	fi
 }
