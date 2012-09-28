@@ -1,45 +1,56 @@
 #!/bin/bash -e
 
+export LC_ALL=C
+PN="gcc"
+
 sudo=
 
-[ -d sys-devel ] && cd sys-devel/gcc
-[ -d ../sys-devel ] && cd ../sys-devel/gcc
+[ -d sys-devel ] && cd sys-devel/${PN}
+[ -d ../sys-devel ] && cd ../sys-devel/${PN}
 if [ ! -e metadata.xml ] ; then
-	echo "Run this in the gcc dir"
+	echo "Run this in the ${PN} dir"
 	exit 1
 fi
 
 export FEATURES="assume-digests -strict digest"
+fetch() {
+	${sudo} env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild $1 fetch
+}
+manifest() {
+	${sudo} ebuild $1 manifest
+}
 
 date
 
-lynx -dump ftp://sources.redhat.com/pub/gcc/snapshots > list
+wget -nv --no-remove-listing -O /dev/null ftp://sources.redhat.com/pub/${PN}/snapshots/
+l=".listing"
+sed -i 's/\r$//' ${l}
 
-major=$(grep /LATEST list | cut -d- -f2)
-echo "GCC majors:" ${major}
+majors=$(awk '$(NF-2) ~ /^LATEST-/ { print gensub("LATEST-", "", "", $(NF-2)) }' ${l})
+echo "${PN} majors:" ${majors}
 
 lm=
-for m in ${major} ; do
-	snaps=$(grep /${m}- list | cut -d- -f2)
-	curr=$(ls gcc-${m}.0_alpha* | LC_ALL=C sort | tail -n 1)
-	if [ -z "${curr}" ] ; then
-		curr=$(ls gcc-${lm}.0_alpha* | LC_ALL=C sort | tail -n 1)
-		if [ -z "${curr}" ] ; then
+for m in ${majors} ; do
+	snaps=$(awk '$NF ~ /^'${m}'-/ { print gensub("'${m}'-", "", "", $NF) }' ${l})
+	curr=$(ls ${PN}-${m}.0_alpha* | sort | tail -n 1)
+	if [[ -z ${curr} ]] ; then
+		curr=$(ls ${PN}-${lm}.0_alpha* | sort | tail -n 1)
+		if [[ -z ${curr} ]] ; then
 			echo "no current ebuild for major ${m}"
 			exit 1
 		fi
 	fi
 	echo "### ${m}: ${curr}"
 	for s in ${snaps} ; do
-		s="gcc-${m}.0_alpha${s}.ebuild"
-		[ -e ${s} ] && continue
+		s="${PN}-${m}.0_alpha${s}.ebuild"
+		[[ -e ${s} ]] && continue
 		echo " ${s}"
 		cp ${curr} ${s}
-		$sudo env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild ${s} fetch
+		fetch ${s}
 	done
 	lm=${m}
 done
 
-rm -f list
+rm -f ${l}
 
-$sudo ebuild ${s} manifest
+manifest ${s}
