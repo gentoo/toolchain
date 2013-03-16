@@ -3,6 +3,7 @@
 # $Header: $
 
 GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
+gcc_LIVE_BRANCH="master"
 
 inherit multilib toolchain
 
