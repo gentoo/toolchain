@@ -57,9 +57,8 @@ src_unpack() {
 pkg_postinst() {
 	toolchain_pkg_postinst
 	echo
-	einfo "This gcc-4 ebuild is provided for your convenience, and the use"
+	einfo "This GCC ebuild is provided for your convenience, and the use"
 	einfo "of this compiler is not supported by the Gentoo Developers."
-	einfo "Please file bugs related to gcc-4 with upstream developers."
-	einfo "Compiler bugs should be filed at http://gcc.gnu.org/bugzilla/"
+	einfo "Please report bugs to upstream at http://gcc.gnu.org/bugzilla/"
 	echo
 }
