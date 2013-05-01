@@ -22,7 +22,7 @@ manifest() {
 
 date
 
-wget -nv --no-remove-listing -O /dev/null ftp://sources.redhat.com/pub/${PN}/snapshots/
+wget -nv --no-remove-listing -O /dev/null ftp://gcc.gnu.org/pub/gcc/snapshots/
 l=".listing"
 sed -i 's/\r$//' ${l}
 
