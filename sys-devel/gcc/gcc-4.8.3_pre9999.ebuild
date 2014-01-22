@@ -2,7 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
+EAPI="5"
+
+GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 
 inherit multilib toolchain
 
@@ -32,18 +34,21 @@ src_unpack() {
 	toolchain_src_unpack
 
 	echo "commit ${EGIT_VERSION}" > "${S}"/gcc/REVISION
+}
 
-	# drop-in patches
+src_prepare() {
+	toolchain_src_prepare
+
 	if ! use vanilla ; then
+		# drop-in patches
 		if [[ -e ${FILESDIR}/${GCC_RELEASE_VER} ]]; then
 			EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
 			EPATCH_EXCLUDE="${FILESDIR}/${GCC_RELEASE_VER}/exclude" \
-			EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch \
-			|| die "Failed during patching."
+			EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch
 		fi
-	fi
 
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
+		[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env-r1.patch
+	fi
 
 	use debug && GCC_CHECKS_LIST="yes"
 

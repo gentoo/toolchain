@@ -2,7 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-GCC_FILESDIR=${PORTDIR}/sys-devel/gcc/files
+EAPI="5"
+
+GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 
 inherit multilib toolchain
 
@@ -32,18 +34,21 @@ src_unpack() {
 	toolchain_src_unpack
 
 	echo "commit ${EGIT_VERSION}" > "${S}"/gcc/REVISION
+}
 
-	# drop-in patches
+src_prepare() {
+	toolchain_src_prepare
+
 	if ! use vanilla ; then
+		# drop-in patches
 		if [[ -e ${FILESDIR}/${GCC_RELEASE_VER} ]]; then
 			EPATCH_SOURCE="${FILESDIR}/${GCC_RELEASE_VER}" \
 			EPATCH_EXCLUDE="${FILESDIR}/${GCC_RELEASE_VER}/exclude" \
-			EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch \
-			|| die "Failed during patching."
+			EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" epatch
 		fi
-	fi
 
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
+		[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
+	fi
 
 	use debug && GCC_CHECKS_LIST="yes"
 
@@ -57,9 +62,8 @@ src_unpack() {
 pkg_postinst() {
 	toolchain_pkg_postinst
 	echo
-	einfo "This gcc-4 ebuild is provided for your convenience, and the use"
+	einfo "This GCC ebuild is provided for your convenience, and the use"
 	einfo "of this compiler is not supported by the Gentoo Developers."
-	einfo "Please file bugs related to gcc-4 with upstream developers."
-	einfo "Compiler bugs should be filed at http://gcc.gnu.org/bugzilla/"
+	einfo "Please report bugs to upstream at http://gcc.gnu.org/bugzilla/"
 	echo
 }
