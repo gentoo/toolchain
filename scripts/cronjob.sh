@@ -6,11 +6,6 @@ NCPUS=$(getconf _NPROCESSORS_ONLN)
 
 set -e
 cd "${0%/*}"/..
-(
-# XXX: Maybe add broken lock/cleanup detection?
-svn upgrade || :
-svn revert -R .
-svn up -q
 
 svn_commit() {
 	# Just in case someone else made a commit before we did.
@@ -31,6 +26,7 @@ svn_commit() {
 		svn commit -m "$1" .
 	fi
 }
+
 doit() {
 	./scripts/update-$1
 	cd sys-devel/$1
@@ -38,12 +34,19 @@ doit() {
 	cd ../..
 }
 
-doit gcc
-doit gdb
+main() {
+	(
+	# XXX: Maybe add broken lock/cleanup detection?
+	svn upgrade || :
+	svn revert -R .
+	svn up -q
+	doit gcc
+	doit gdb
 
-# Disable for now: egencache deletes .svn
-#egencache --repo=toolchain --update --portdir-overlay="${PWD}" -j ${NCPUS:-1}
-#cd metadata
-#svn_commit "update metadata"
-
-) >& scripts/cronjob.log
+	# Disable for now: egencache deletes .svn
+	#egencache --repo=toolchain --update --portdir-overlay="${PWD}" -j ${NCPUS:-1}
+	#cd metadata
+	#svn_commit "update metadata"
+	) >& scripts/cronjob.log
+}
+main "$@"
