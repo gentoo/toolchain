@@ -31,7 +31,7 @@ case ${PV} in
 	;;
 9999*)
 	# live git tree
-	EGIT_REPO_URI="git://sourceware.org/git/gdb.git"
+	EGIT_REPO_URI="git://sourceware.org/git/binutils-gdb.git"
 	inherit git-2
 	SRC_URI=""
 	;;
@@ -102,6 +102,8 @@ src_configure() {
 		--with-pkgversion="$(gdb_branding)"
 		--with-bugurl='http://bugs.gentoo.org/'
 		--disable-werror
+		# Disable modules that are in a combined binutils/gdb tree. #490566
+		--disable-{binutils,etc,gas,gold,gprof,ld}
 		$(is_cross && echo \
 			--with-sysroot="${sysroot}" \
 			--includedir="${sysroot}/usr/include")
@@ -128,6 +130,9 @@ src_configure() {
 			--enable-64-bit-bfd
 			--disable-install-libbfd
 			--disable-install-libiberty
+			# This only disables building in the readline subdir.
+			# For gdb itself, it'll use the system version.
+			--disable-readline
 			--with-system-readline
 			--with-separate-debug-dir="${EPREFIX}"/usr/lib/debug
 			$(use_with expat)
