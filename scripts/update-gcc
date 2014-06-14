@@ -33,7 +33,7 @@ for e in ${ebuilds} ; do
 	if grep -q "\<${v}$" ${l} ; then
 		continue
 	fi
-	svn rm ${e}
+	git rm -f ${e}
 done
 
 # Then load new ones.
