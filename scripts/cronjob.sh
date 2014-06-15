@@ -8,8 +8,10 @@ set -e
 cd "${0%/*}"/..
 
 commit() {
-	git add .
-	git commit -m "$1" .
+	if [[ -n $(git status --porcelain) ]] ; then
+		git add .
+		git commit -m "$1" .
+	fi
 }
 
 doit() {
