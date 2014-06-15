@@ -9,7 +9,7 @@ cd "${0%/*}"/..
 
 commit() {
 	git add .
-	git commit -a -m "$1" .
+	git commit -m "$1" .
 }
 
 doit() {
