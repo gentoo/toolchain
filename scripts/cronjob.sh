@@ -17,7 +17,7 @@ commit() {
 doit() {
 	./scripts/update-$1
 	cd sys-devel/$1
-	commit "update $1 snapshots"
+	commit "$1: update snapshots"
 	cd ../..
 }
 
@@ -31,7 +31,7 @@ main() {
 
 	egencache --repo=toolchain --update --portdir-overlay="${PWD}" -j ${NCPUS:-1}
 	cd metadata
-	commit "update metadata"
+	commit "cache: regen"
 
 	# Just in case someone else made a commit before we did.
 	git pull --rebase
