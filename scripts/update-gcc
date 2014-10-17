@@ -37,7 +37,7 @@ for e in ${ebuilds} ; do
 done
 
 # Then load new ones.
-majors=$(awk '$(NF-2) ~ /^LATEST-/ { print gensub("LATEST-", "", "", $(NF-2)) }' ${l})
+majors=$(awk '$(NF-2) ~ /^LATEST-/ { print gensub("LATEST-", "", "", $(NF-2)) }' ${l} | sort -V)
 echo "${PN} majors:" ${majors}
 
 lm=
