@@ -7,9 +7,6 @@ GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 
 inherit eutils toolchain
 
-DESCRIPTION="The GNU Compiler Collection."
-
-LICENSE="GPL-2 LGPL-2.1"
 KEYWORDS=""
 
 RDEPEND=""

@@ -19,9 +19,6 @@ PIE_UCLIBC_STABLE="x86 arm"
 
 inherit toolchain
 
-DESCRIPTION="The GNU Compiler Collection"
-
-LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ ) FDL-1.2+"
 KEYWORDS="alpha amd64 arm -hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 ~x86-fbsd"
 
 RDEPEND=""

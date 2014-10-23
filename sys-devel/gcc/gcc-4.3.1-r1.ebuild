@@ -7,9 +7,6 @@ UCLIBC_VER="1.0"
 
 inherit toolchain
 
-DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
-
-LICENSE="GPL-2 LGPL-2.1"
 KEYWORDS=""
 
 RDEPEND=""

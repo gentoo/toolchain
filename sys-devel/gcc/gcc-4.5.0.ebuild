@@ -19,9 +19,6 @@ SSP_UCLIBC_STABLE=""
 
 inherit toolchain
 
-DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
-
-LICENSE="GPL-3 LGPL-3 || ( GPL-3 libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.2"
 KEYWORDS=""
 
 RDEPEND=""

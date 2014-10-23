@@ -19,9 +19,6 @@ PIE_UCLIBC_STABLE="x86 arm"
 
 inherit toolchain
 
-DESCRIPTION="The GNU Compiler Collection.  Includes C/C++, java compilers, pie+ssp extensions, Haj Ten Brugge runtime bounds checking"
-
-LICENSE="GPL-3 LGPL-3 || ( GPL-3 libgcc libstdc++ ) FDL-1.2"
 KEYWORDS=""
 
 RDEPEND=""
