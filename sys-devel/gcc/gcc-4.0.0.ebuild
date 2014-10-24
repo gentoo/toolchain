@@ -14,15 +14,6 @@ RDEPEND=""
 DEPEND="${RDEPEND}
 	>=sys-devel/binutils-2.15.97"
 
-src_unpack() {
-	toolchain_src_unpack
-	cd "${S}"
-	[[ ! -e /root/gcc4/list ]] && return 0
-	for x in $(</root/gcc4/list) ; do
-		[[ -f /root/gcc4/${x} ]] && epatch "/root/gcc4/${x}"
-	done
-}
-
 pkg_postinst() {
 	toolchain_pkg_postinst
 
