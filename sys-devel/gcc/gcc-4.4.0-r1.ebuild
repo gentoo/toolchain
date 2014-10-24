@@ -36,7 +36,5 @@ src_unpack() {
 
 	sed -i 's/use_fixproto=yes/:/' gcc/config.gcc #PR33200
 
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
-
 	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${FILESDIR}"/4.4.0/gcc-4.4.0-softfloat.patch
 }

@@ -23,9 +23,6 @@ src_prepare() {
 	toolchain_src_prepare
 
 	use debug && GCC_CHECKS_LIST="yes"
-
-	use vanilla && return 0
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env.patch
 }
 
 pkg_postinst() {
