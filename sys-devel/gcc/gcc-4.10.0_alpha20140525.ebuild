@@ -8,16 +8,22 @@ GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 inherit eutils toolchain
 
 KEYWORDS=""
+IUSE="debug"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
-	>=${CATEGORY}/binutils-2.16.1"
+	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
+	>=${CATEGORY}/binutils-2.18"
+
+if [[ ${CATEGORY} != cross-* ]] ; then
+	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.12 )"
+fi
 
 src_prepare() {
 	toolchain_src_prepare
 
-	use vanilla && return 0
+	use debug && GCC_CHECKS_LIST="yes"
 
-	# Fix cross-compiling
-	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
+	use vanilla && return 0
+	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env-r1.patch
 }
