@@ -27,12 +27,3 @@ src_prepare() {
 	use vanilla && return 0
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env-r1.patch
 }
-
-pkg_postinst() {
-	toolchain_pkg_postinst
-	echo
-	einfo "This GCC ebuild is provided for your convenience, and the use"
-	einfo "of this compiler is not supported by the Gentoo Developers."
-	einfo "Please report bugs to upstream at http://gcc.gnu.org/bugzilla/"
-	echo
-}

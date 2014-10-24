@@ -25,11 +25,3 @@ src_prepare() {
 	# Fix cross-compiling
 	epatch "${GCC_FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
 }
-
-pkg_postinst() {
-	toolchain_pkg_postinst
-
-	einfo "This GCC ebuild is provided for your convenience, and the use"
-	einfo "of this compiler is not supported by the Gentoo Developers."
-	einfo "Please report bugs to upstream at http://gcc.gnu.org/bugzilla/"
-}
