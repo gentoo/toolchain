@@ -29,8 +29,8 @@ sed -i 's/\r$//' ${l}
 # First unload ones that no longer exist.
 ebuilds=$(echo ${PN}-?.?.50.*.ebuild)
 for e in ${ebuilds} ; do
-	f=$(echo "${e}" | sed -e 's:^gdb-:gdb-weekly-:g' -e 's:.ebuild:.tar.bz2:g')
-	if grep -q "\<${f}$" ${l} ; then
+	f=$(echo "${e}" | sed -e 's:^gdb-:gdb-weekly-:g' -e 's:.ebuild:.tar.(bz2|xz):g')
+	if grep -qE "\<${f}$" ${l} ; then
 		continue
 	fi
 	git rm -f ${e}
