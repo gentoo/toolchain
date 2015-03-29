@@ -12,8 +12,7 @@ IUSE="debug"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
-	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )
-	>=${CATEGORY}/binutils-2.18"
+	>=${CATEGORY}/binutils-2.20"
 
 if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.12 )"
