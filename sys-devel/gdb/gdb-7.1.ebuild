@@ -31,7 +31,7 @@ RDEPEND=">=sys-libs/ncurses-5.2-r2
 	expat? ( dev-libs/expat )
 	python? ( dev-lang/python )"
 DEPEND="${RDEPEND}
-	|| ( app-arch/xz-utils app-arch/lzma-utils )
+	app-arch/xz-utils
 	test? ( dev-util/dejagnu )
 	nls? ( sys-devel/gettext )"
 
