@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gdb/gdb-9999.ebuild,v 1.32 2015/02/17 10:44:28 vapier Exp $
 
-EAPI="4"
+EAPI="5"
 PYTHON_COMPAT=( python{2_7,3_3,3_4} )
 
 inherit flag-o-matic eutils python-single-r1
@@ -62,7 +62,7 @@ REQUIRED_USE="
 RDEPEND="server? ( !dev-util/gdbserver )
 	client? (
 		>=sys-libs/ncurses-5.2-r2
-		sys-libs/readline
+		sys-libs/readline:0=
 		expat? ( dev-libs/expat )
 		lzma? ( app-arch/xz-utils )
 		python? ( ${PYTHON_DEPS} )

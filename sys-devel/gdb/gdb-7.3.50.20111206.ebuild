@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gdb/gdb-9999.ebuild,v 1.24 2014/03/09 00:04:37 vapier Exp $
 
-EAPI="4"
+EAPI="5"
 PYTHON_COMPAT=( python2_7 )
 
 inherit flag-o-matic eutils python-single-r1
@@ -57,7 +57,7 @@ IUSE="+client expat multitarget nls +python +server test vanilla zlib"
 
 RDEPEND="!dev-util/gdbserver
 	>=sys-libs/ncurses-5.2-r2
-	sys-libs/readline
+	sys-libs/readline:0=
 	expat? ( dev-libs/expat )
 	python? ( ${PYTHON_DEPS} )
 	zlib? ( sys-libs/zlib )"
