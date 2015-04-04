@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-PATCHVER="1.6"
+PATCHVER="1.7"
 UCLIBC_PATCHVER="1.0"
 ELF2FLT_VER=""
 inherit toolchain-binutils
