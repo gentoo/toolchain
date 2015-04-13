@@ -1,13 +1,13 @@
 DEFINED_PHASES=configure install postinst prepare setup test
-DEPEND=!dev-util/gdbserver >=sys-libs/ncurses-5.2-r2 sys-libs/readline expat? ( dev-libs/expat ) python? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) dev-lang/python-exec:2[python_targets_python2_7(-)?,python_single_target_python2_7(+)?] ) zlib? ( sys-libs/zlib ) app-arch/xz-utils virtual/yacc test? ( dev-util/dejagnu ) nls? ( sys-devel/gettext )
+DEPEND=!dev-util/gdbserver >=sys-libs/ncurses-5.2-r2 sys-libs/readline:0= expat? ( dev-libs/expat ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_5(-),-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_3(-),-python_single_target_python3_4(-),python_single_target_python2_7(+)] ) zlib? ( sys-libs/zlib ) app-arch/xz-utils virtual/yacc test? ( dev-util/dejagnu ) nls? ( sys-devel/gettext )
 DESCRIPTION=GNU debugger
-EAPI=4
+EAPI=5
 HOMEPAGE=http://sourceware.org/gdb/
-IUSE=+client expat multitarget nls +python +server test vanilla zlib python_targets_python2_7 python_single_target_python2_7
+IUSE=+client expat multitarget nls +python +server test vanilla zlib python_targets_python2_7
 KEYWORDS=~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~x64-freebsd ~amd64-linux ~arm-linux ~x86-linux ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris
 LICENSE=GPL-2 LGPL-2
-RDEPEND=!dev-util/gdbserver >=sys-libs/ncurses-5.2-r2 sys-libs/readline expat? ( dev-libs/expat ) python? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) dev-lang/python-exec:2[python_targets_python2_7(-)?,python_single_target_python2_7(+)?] ) zlib? ( sys-libs/zlib )
+RDEPEND=!dev-util/gdbserver >=sys-libs/ncurses-5.2-r2 sys-libs/readline:0= expat? ( dev-libs/expat ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_5(-),-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_3(-),-python_single_target_python3_4(-),python_single_target_python2_7(+)] ) zlib? ( sys-libs/zlib )
 SLOT=0
 SRC_URI=ftp://sourceware.org/pub/gdb/snapshots/current/gdb-weekly-7.4.50.20120710.tar.bz2
-_eclasses_=eutils	32548a82e42dc26e3312581476d2f20c	flag-o-matic	75e24bac8423c515dd9c5717f08feb83	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	python-single-r1	a71a169a881e0a11d04a7fe12dc39f6e	python-utils-r1	47dda904cf91c61f45b564d9f834fde1	toolchain-funcs	6ce35cb0d56d962486c858d41604c820
-_md5_=db3e74fcf53b52d4275e5e75848c0a4f
+_eclasses_=eutils	9fb270e417e0e83d64ca52586c4a79de	flag-o-matic	c263990f1b677b0f0be0a3299f179762	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	python-single-r1	7a178335dbd6ea7f50ed4e3e1c13c1e4	python-utils-r1	096f8247eae93026af13ab88cf4305cd	toolchain-funcs	79b635d29abf0572d6a1b0dc8e63c0e4
+_md5_=b3d9bbed400c0485028c1e287dbec3a9
