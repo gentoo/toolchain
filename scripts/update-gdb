@@ -1,56 +1,71 @@
-#!/bin/bash -e
+#!/usr/bin/python
 
-export LC_ALL=C
-PN="gdb"
+"""Update gdb snapshots"""
 
-sudo=
+from __future__ import print_function
 
-[ -d sys-devel ] && cd sys-devel/${PN}
-[ -d ../sys-devel ] && cd ../sys-devel/${PN}
-if [ ! -e metadata.xml ] ; then
-	echo "Run this in the ${PN} dir"
-	exit 1
-fi
+import distutils.version
+import glob
+import logging
+import re
+import shutil
+import sys
 
-export FEATURES="assume-digests -strict digest"
-fetch() {
-	${sudo} env GENTOO_MIRRORS=" " FEATURES="${FEATURES}" ebuild $1 fetch
-}
-manifest() {
-	${sudo} ebuild $1 manifest
-}
+from common import * # pylint: disable=wildcard-import,unused-wildcard-import
 
-date
 
-wget -nv --no-remove-listing -O /dev/null ftp://sources.redhat.com/pub/${PN}/snapshots/current/
-l=".listing"
-sed -i 's/\r$//' ${l}
+CATEGORY = 'sys-devel'
+PN = 'gdb'
+URL = 'ftp://sources.redhat.com/pub/gdb/snapshots/current/'
 
-# First unload ones that no longer exist.
-ebuilds=$(echo ${PN}-?.?.50.*.ebuild)
-for e in ${ebuilds} ; do
-	f=$(echo "${e}" | sed -e 's:^gdb-:gdb-weekly-:g' -e 's:.ebuild:.tar.(bz2|xz):g')
-	if grep -qE "\<${f}$" ${l} ; then
-		continue
-	fi
-	git rm -f ${e}
-done
 
-# Then load new ones.
-snaps=$(grep -o ${PN}-weekly-'[[:digit:]]'.*.tar.* ${l} | \
-	sed -e 's:.*-::' -e 's:.tar.*::')
+def main(argv):
+	opts = common_main(argv, CATEGORY, PN)
 
-src=$(ls ${PN}-*.ebuild | sort | tail -n 1)
-for s in ${snaps} ; do
-	dst="${PN}-${s}.ebuild"
-	[[ ! -e ${dst} ]] || continue
-	echo "### found ${s}"
-	cp ${src} ${dst}
-	fetch ${dst}
-done
+	remote_list = ver_sort(
+		x for x in list_snaps(URL, debug=opts.debug)
+		if x.startswith('%s-weekly-' % PN) and '.tar' in x)
 
-rm -f ${l}
+	# Create the lists of curr/new versions.
+	old_pkgs = set(glob.glob('%s-*.ebuild' % PN))
+	new_pkgs = set()
+	for snap in remote_list:
+		m = re.match(r'%s-weekly-([0-9.]+)\.tar' % PN, snap)
+		if m:
+			ebuild = '%s-%s.ebuild' % (PN, m.group(1))
+			new_pkgs.add(ebuild)
+			logging.debug('found remote %s', ebuild)
+		else:
+			logging.warning('skipping reomte %s', snap)
 
-if [[ -n ${src} ]] ; then
-	manifest ${src}
-fi
+	# Create ebuilds for the new versions we found.
+	closest_ver = distutils.version.LooseVersion('0')
+	for pkg in new_pkgs - old_pkgs:
+		logging.info('adding %s', pkg)
+		ver = get_ver(pkg)
+		for opkg in old_pkgs:
+			if '.50.' not in opkg:
+				continue
+			over = get_ver(opkg)
+			if over < ver and over > closest_ver:
+				closest_ver = over
+		logging.info(' copying from %s', closest_ver)
+		ebuild = '%s-%s.ebuild' % (PN, closest_ver)
+		shutil.copy(ebuild, pkg)
+		git(['add', pkg])
+		run_ebuild(pkg, 'fetch')
+		#run_ebuild(pkg, 'manifest')
+
+	# Clean out the old snapshots.
+	for pkg in ver_sort(old_pkgs - new_pkgs):
+		if '.50.' not in pkg:
+			continue
+		logging.info('cleaning old %s', pkg)
+		git(['rm', '-f', pkg])
+
+	run(['repoman', 'manifest'])
+	git(['add', 'Manifest'])
+
+
+if __name__ == '__main__':
+	main(sys.argv[1:])
