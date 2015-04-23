@@ -96,7 +96,11 @@ def get_ver(ebuild):
 		raise ValueError('could not parse %s' % ebuild)
 	dots = m.group(1)
 	stamp = m.group(4)
-	return distutils.version.LooseVersion('%s-%s' % (dots, stamp))
+	if stamp:
+		v = '%s-%s' % (dots, stamp)
+	else:
+		v = dots
+	return distutils.version.LooseVersion(v)
 
 
 def parse_args(argv):
