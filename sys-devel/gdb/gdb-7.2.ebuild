@@ -37,9 +37,7 @@ fi
 SRC_URI="${SRC_URI} ${PATCH_VER:+mirror://gentoo/${P}-patches-${PATCH_VER}.tar.xz}"
 
 LICENSE="GPL-2 LGPL-2"
-is_cross \
-	&& SLOT="${CTARGET}" \
-	|| SLOT="0"
+SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sparc x86 ~x86-fbsd ~x64-macos ~x86-macos"
 IUSE="expat multitarget nls python test vanilla"
 
