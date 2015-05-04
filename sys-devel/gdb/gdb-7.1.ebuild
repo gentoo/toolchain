@@ -94,8 +94,3 @@ src_install() {
 	# Remove shared info pages
 	rm -f "${D}"/usr/share/info/{annotate,bfd,configure,standards}.info*
 }
-
-pkg_postinst() {
-	# portage sucks and doesnt unmerge files in /etc
-	rm -vf "${ROOT}"/etc/skel/.gdbinit
-}

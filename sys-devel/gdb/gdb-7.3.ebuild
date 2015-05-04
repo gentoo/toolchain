@@ -118,16 +118,3 @@ src_install() {
 	# Remove shared info pages
 	rm -f "${ED}"/usr/share/info/{annotate,bfd,configure,standards}.info*
 }
-
-pkg_postinst() {
-	# portage sucks and doesnt unmerge files in /etc
-	rm -vf "${ROOT}"/etc/skel/.gdbinit
-
-	if use prefix && [[ ${CHOST} == *-darwin* ]] ; then
-		ewarn "gdb is unable to get a mach task port when installed by Prefix"
-		ewarn "Portage, unprivileged.  To make gdb fully functional you'll"
-		ewarn "have to perform the following steps:"
-		ewarn "  % sudo chgrp procmod ${EPREFIX}/usr/bin/gdb"
-		ewarn "  % sudo chmod g+s ${EPREFIX}/usr/bin/gdb"
-	fi
-}
