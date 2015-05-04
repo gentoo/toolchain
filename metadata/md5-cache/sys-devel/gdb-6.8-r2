@@ -1,4 +1,4 @@
-DEFINED_PHASES=compile install postinst test unpack
+DEFINED_PHASES=compile install test unpack
 DEPEND=>=sys-libs/ncurses-5.2-r2 sys-libs/readline expat? ( dev-libs/expat ) app-arch/xz-utils test? ( dev-util/dejagnu ) nls? ( sys-devel/gettext )
 DESCRIPTION=GNU debugger
 HOMEPAGE=http://sourceware.org/gdb/
@@ -9,4 +9,4 @@ RDEPEND=>=sys-libs/ncurses-5.2-r2 sys-libs/readline expat? ( dev-libs/expat )
 SLOT=0
 SRC_URI=mirror://gnu/gdb/gdb-6.8.tar.bz2 ftp://sourceware.org/pub/gdb/releases/gdb-6.8.tar.bz2 mirror://gentoo/gdb-6.8-patches-1.5.tar.lzma
 _eclasses_=eutils	9fb270e417e0e83d64ca52586c4a79de	flag-o-matic	c263990f1b677b0f0be0a3299f179762	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	c961250d50160cd37d6b7fd9e8429c92
-_md5_=61be2f88d302b45da31cbca4b6ef2d4d
+_md5_=c7336e7cacec0b032eea0ea5f46d9eb2
