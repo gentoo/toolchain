@@ -12,7 +12,7 @@ inherit multilib toolchain
 KEYWORDS=""
 
 SLOT="${GCC_BRANCH_VER}-vcs"
-IUSE="debug nobootstrap offline"
+IUSE="nobootstrap offline"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -45,8 +45,6 @@ src_prepare() {
 
 		[[ ${CHOST} == ${CTARGET} ]] && epatch "${GCC_FILESDIR}"/gcc-spec-env-r1.patch
 	fi
-
-	use debug && GCC_CHECKS_LIST="yes"
 
 	# single-stage build for quick patch testing
 	if use nobootstrap; then
