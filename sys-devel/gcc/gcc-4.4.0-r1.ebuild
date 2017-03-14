@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/Attic/gcc-4.4.0-r1.ebuild,v 1.3 2009/08/13 19:40:11 halcy0n dead $
 
-EAPI="2"
+EAPI="5"
 
 PATCH_VER="1.2"
 UCLIBC_VER="1.0"
@@ -20,8 +20,8 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
 fi
 
-src_unpack() {
-	toolchain_src_unpack
+src_prepare() {
+	toolchain_src_prepare
 
 	use vanilla && return 0
 

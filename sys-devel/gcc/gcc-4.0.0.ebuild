@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/Attic/gcc-4.0.0.ebuild,v 1.7 2005/07/08 19:07:22 eradicator dead $
 
-EAPI="2"
+EAPI="5"
 
 PATCH_VER="1.1"
 UCLIBC_VER="1.0"

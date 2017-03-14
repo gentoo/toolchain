@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc/gcc-4.4.2.ebuild,v 1.13 2013/04/12 06:47:58 ulm Exp $
 
-EAPI="2"
+EAPI="5"
 
 PATCH_VER="1.0"
 UCLIBC_VER="1.0"
@@ -21,8 +21,8 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 	PDEPEND="${PDEPEND} elibc_glibc? ( >=sys-libs/glibc-2.8 )"
 fi
 
-src_unpack() {
-	toolchain_src_unpack
+src_prepare() {
+	toolchain_src_prepare
 
 	use vanilla && return 0
 
