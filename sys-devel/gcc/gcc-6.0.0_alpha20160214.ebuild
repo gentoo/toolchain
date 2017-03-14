@@ -4,7 +4,7 @@
 EAPI="5"
 GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 
-inherit eutils toolchain
+inherit toolchain
 
 KEYWORDS=""
 

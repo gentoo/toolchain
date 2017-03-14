@@ -19,7 +19,7 @@ SSP_STABLE="amd64 x86 mips ppc ppc64 arm"
 SSP_UCLIBC_STABLE="x86 amd64 mips ppc ppc64 arm"
 #end Hardened stuff
 
-inherit eutils toolchain
+inherit toolchain
 
 KEYWORDS="~hppa"
 

@@ -5,7 +5,7 @@ EAPI="5"
 
 GCC_FILESDIR="${PORTDIR}/sys-devel/gcc/files"
 
-inherit multilib toolchain
+inherit toolchain
 
 KEYWORDS=""
 

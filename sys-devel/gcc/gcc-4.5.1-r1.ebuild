@@ -6,7 +6,7 @@ EAPI="5"
 PATCH_VER="1.5"
 UCLIBC_VER="1.0"
 
-inherit eutils toolchain
+inherit toolchain
 
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd"
 
