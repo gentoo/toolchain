@@ -21,6 +21,4 @@ src_prepare() {
 
 	# Fix cross-compiling
 	epatch "${FILESDIR}"/4.1.0/gcc-4.1.0-cross-compile.patch
-
-	[[ ${CTARGET} == *-softfloat-* ]] && epatch "${FILESDIR}"/4.0.2/gcc-4.0.2-softfloat.patch
 }
