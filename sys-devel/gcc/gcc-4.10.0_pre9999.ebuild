@@ -11,7 +11,7 @@ inherit toolchain
 KEYWORDS=""
 
 SLOT="${GCC_BRANCH_VER}-vcs"
-IUSE="nobootstrap offline"
+IUSE="nobootstrap"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -22,10 +22,6 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_unpack() {
-	# use the offline USE flag to prevent the ebuild from trying to update from
-	# the repo.  the current sources will be used instead.
-	use offline && EVCS_OFFLINE="yes"
-
 	toolchain_src_unpack
 
 	echo "commit ${EGIT_VERSION}" > "${S}"/gcc/REVISION
