@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # Maintainer: Toolchain Ninjas <toolchain@gentoo.org>
-# @SUPPORTED_EAPIS: 5 6 7
+# @SUPPORTED_EAPIS: 8
 
 DESCRIPTION="The GNU Compiler Collection"
 HOMEPAGE="https://gcc.gnu.org/"
 
-inherit eutils flag-o-matic gnuconfig libtool multilib pax-utils toolchain-funcs prefix
+inherit epatch flag-o-matic gnuconfig libtool multilib pax-utils toolchain-funcs prefix
 
 tc_is_live() {
 	[[ ${PV} == *9999* ]]
@@ -28,9 +28,7 @@ fi
 FEATURES=${FEATURES/multilib-strict/}
 
 case ${EAPI:-0} in
-	0|1|2|3|4*) die "Need to upgrade to at least EAPI=5" ;;
-	5*|6) inherit eapi7-ver ;;
-	7) ;;
+	8) ;;
 	*) die "I don't speak EAPI ${EAPI}." ;;
 esac
 
@@ -120,16 +118,6 @@ STDCXX_INCDIR=${TOOLCHAIN_STDCXX_INCDIR:-${LIBPATH}/include/g++-v${GCC_BRANCH_VE
 LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.3+"
 IUSE="test vanilla +nls"
 RESTRICT="!test? ( test )"
-
-tc_supports_dostrip() {
-	case ${EAPI:-0} in
-		5*|6) return 1 ;;
-		7) return 0 ;;
-		*) die "Update apply_patches() for ${EAPI}." ;;
-	esac
-}
-
-tc_supports_dostrip || RESTRICT+=" strip" # cross-compilers need controlled stripping
 
 TC_FEATURES=()
 
@@ -278,11 +266,18 @@ S=$(
 )
 
 gentoo_urls() {
-	local devspace="HTTP~vapier/dist/URI HTTP~rhill/dist/URI
-	HTTP~zorry/patches/gcc/URI HTTP~blueness/dist/URI
-	HTTP~tamiko/distfiles/URI HTTP~slyfox/distfiles/URI"
+	local devspace="
+		HTTP~soap/distfiles/URI
+		HTTP~sam/distfiles/URI
+		HTTP~sam/distfiles/sys-devel/gcc/URI
+		HTTP~tamiko/distfiles/URI
+		HTTP~zorry/patches/gcc/URI
+		HTTP~vapier/dist/URI
+		HTTP~blueness/dist/URI
+		http://bloodnoc.org/~roy/olde-distfiles/URI
+	"
 	devspace=${devspace//HTTP/https:\/\/dev.gentoo.org\/}
-	echo mirror://gentoo/$1 ${devspace//URI/$1}
+	echo ${devspace//URI/$1} mirror://gentoo/$1
 }
 
 # This function handles the basics of setting the SRC_URI for a gcc ebuild.
@@ -397,11 +392,11 @@ SRC_URI=$(get_gcc_src_uri)
 
 #---->> pkg_pretend <<----
 
-toolchain_pkg_pretend() {
-	if ! use_if_iuse cxx ; then
-		use_if_iuse go && ewarn 'Go requires a C++ compiler, disabled due to USE="-cxx"'
-		use_if_iuse objc++ && ewarn 'Obj-C++ requires a C++ compiler, disabled due to USE="-cxx"'
-		use_if_iuse gcj && ewarn 'GCJ requires a C++ compiler, disabled due to USE="-cxx"'
+toolchain-legacy_pkg_pretend() {
+	if ! in_iuse cxx && use cxx ; then
+		in_iuse go && use go && ewarn 'Go requires a C++ compiler, disabled due to USE="-cxx"'
+		in_iuse objc++ && use objc++ && ewarn 'Obj-C++ requires a C++ compiler, disabled due to USE="-cxx"'
+		in_iuse gcj && use gcj && ewarn 'GCJ requires a C++ compiler, disabled due to USE="-cxx"'
 	fi
 
 	want_minispecs
@@ -409,7 +404,7 @@ toolchain_pkg_pretend() {
 
 #---->> pkg_setup <<----
 
-toolchain_pkg_setup() {
+toolchain-legacy_pkg_setup() {
 	# we dont want to use the installed compiler's specs to build gcc
 	unset GCC_SPECS
 	unset LANGUAGES #265283
@@ -417,7 +412,7 @@ toolchain_pkg_setup() {
 
 #---->> src_unpack <<----
 
-toolchain_src_unpack() {
+toolchain-legacy_src_unpack() {
 	if tc_is_live ; then
 		git-r3_src_unpack
 	fi
@@ -432,18 +427,12 @@ toolchain_src_unpack() {
 tc_apply_patches() {
 	[[ ${#@} -lt 2 ]] && die "usage: tc_apply_patches <message> <patches...>"
 
-	einfo "$1"; shift
-
-	case ${EAPI:-0} in
-		# Note: even for EAPI=6 we used 'epatch' semantics. To avoid
-		# breaking existing ebuilds use 'eapply' only in EAPI=7 or later.
-		5*|6) epatch "$@" ;;
-		7) eapply "$@" ;;
-		*) die "Update apply_patches() for ${EAPI}." ;;
-	esac
+	einfo "$1"
+	shift
+	epatch "$@"
 }
 
-toolchain_src_prepare() {
+toolchain-legacy_src_prepare() {
 	export BRANDING_GCC_PKGVERSION="Gentoo ${GCC_PVR}"
 	cd "${S}"
 
@@ -455,13 +444,9 @@ toolchain_src_prepare() {
 		BRANDING_GCC_PKGVERSION="${BRANDING_GCC_PKGVERSION}, commit ${EGIT_VERSION}"
 	fi
 
-	case ${EAPI:-0} in
-		5*) epatch_user;;
-		6|7) eapply_user ;;
-		*) die "Update toolchain_src_prepare() for ${EAPI}." ;;
-	esac
+	eapply_user
 
-	if ( tc_version_is_at_least 4.8.2 || use_if_iuse hardened ) && ! use vanilla ; then
+	if ( tc_version_is_at_least 4.8.2 || (in_iuse hardened && use hardened)) && ! use vanilla ; then
 		make_gcc_hard
 	fi
 
@@ -483,7 +468,7 @@ toolchain_src_prepare() {
 	fi
 
 	# >= gcc-4.3 doesn't bundle ecj.jar, so copy it
-	if tc_version_is_at_least 4.3 && use_if_iuse gcj ; then
+	if tc_version_is_at_least 4.3 && in_iuse gcj && use gcj; then
 		if tc_version_is_at_least 4.5 ; then
 			einfo "Copying ecj-4.5.jar"
 			cp -pPR "${DISTDIR}/ecj-4.5.jar" "${S}/ecj.jar" || die
@@ -593,13 +578,13 @@ make_gcc_hard() {
 
 	# Gcc >= 6.X we can use configurations options to turn pie/ssp on as default
 	if tc_version_is_at_least 6.0 ; then
-		if use_if_iuse pie ; then
+		if in_iuse pie && use pie ; then
 			einfo "Updating gcc to use automatic PIE building ..."
 		fi
-		if use_if_iuse ssp ; then
+		if in_iuse ssp && use ssp ; then
 			einfo "Updating gcc to use automatic SSP building ..."
 		fi
-		if use_if_iuse hardened ; then
+		if in_iuse hardened && use hardened ; then
 			# Will add some hardened options as default, like:
 			# -fstack-clash-protection
 			# -z now
@@ -609,7 +594,7 @@ make_gcc_hard() {
 			BRANDING_GCC_PKGVERSION=${BRANDING_GCC_PKGVERSION/Gentoo/Gentoo Hardened}
 		fi
 	else
-		if use_if_iuse hardened ; then
+		if in_iuse hardened && use hardened ; then
 			# rebrand to make bug reports easier
 			BRANDING_GCC_PKGVERSION=${BRANDING_GCC_PKGVERSION/Gentoo/Gentoo Hardened}
 			if hardened_gcc_works ; then
@@ -757,7 +742,7 @@ do_gcc_rename_java_bins() {
 
 #---->> src_configure <<----
 
-toolchain_src_configure() {
+toolchain-legacy_src_configure() {
 	downgrade_arch_flags
 	gcc_do_filter_flags
 
@@ -880,12 +865,12 @@ toolchain_src_configure() {
 	fi
 
 	# Build compiler itself using LTO
-	if tc_version_is_at_least 9.1 && use_if_iuse lto ; then
+	if tc_version_is_at_least 9.1 && in_iuse lto && use lto ; then
 		confgcc+=( --with-build-config=bootstrap-lto )
 	fi
 
 	# Support to disable pch when building libstdcxx
-	if tc_version_is_at_least 6.0 && ! use_if_iuse pch ; then
+	if tc_version_is_at_least 6.0 && ! ( in_iuse pch && use pch ) ; then
 		confgcc+=( --disable-libstdcxx-pch )
 	fi
 
@@ -1166,13 +1151,13 @@ toolchain_src_configure() {
 	fi
 
 	if tc_version_is_at_least 4.0 ; then
-		if use_if_iuse libssp ; then
+		if in_iuse libssp && use libssp ; then
 			confgcc+=( --enable-libssp )
 		else
 			if hardened_gcc_is_stable ssp; then
 				export gcc_cv_libc_provides_ssp=yes
 			fi
-			if use_if_iuse ssp; then
+			if in_iuse ssp && use ssp ; then
 				# On some targets USE="ssp -libssp" is an invalid
 				# configuration as target libc does not provide
 				# stack_chk_* functions. Do not disable libssp there.
@@ -1575,7 +1560,7 @@ gcc-abi-map() {
 
 #----> src_compile <----
 
-toolchain_src_compile() {
+toolchain-legacy_src_compile() {
 	touch "${S}"/gcc/c-gperf.h
 
 	# Do not make manpages if we do not have perl ...
@@ -1611,7 +1596,7 @@ gcc_do_make() {
 		# resulting binaries natively ^^;
 		GCC_MAKE_TARGET=${GCC_MAKE_TARGET-all}
 	else
-		if tc_version_is_at_least 3.3 && use_if_iuse pgo; then
+		if tc_version_is_at_least 3.3 && in_iuse pgo && use pgo ; then
 			GCC_MAKE_TARGET=${GCC_MAKE_TARGET-profiledbootstrap}
 		else
 			GCC_MAKE_TARGET=${GCC_MAKE_TARGET-bootstrap-lean}
@@ -1665,7 +1650,7 @@ gcc_do_make() {
 		emake -C gcc gnattools
 	fi
 
-	if ! is_crosscompile && use_if_iuse cxx && use_if_iuse doc ; then
+	if ! is_crosscompile && in_iuse cxx && use cxx && in_iuse doc && use doc ; then
 		if type -p doxygen > /dev/null ; then
 			if tc_version_is_at_least 4.3 ; then
 				cd "${CTARGET}"/libstdc++-v3/doc
@@ -1691,7 +1676,7 @@ gcc_do_make() {
 
 #---->> src_test <<----
 
-toolchain_src_test() {
+toolchain-legacy_src_test() {
 	cd "${WORKDIR}"/build
 	# 'asan' wants to be preloaded first, so does 'sandbox'.
 	# To make asan tests work disable sandbox for all of test suite.
@@ -1701,7 +1686,7 @@ toolchain_src_test() {
 
 #---->> src_install <<----
 
-toolchain_src_install() {
+toolchain-legacy_src_install() {
 	cd "${WORKDIR}"/build
 
 	# Don't allow symlinks in private gcc include dir as this can break the build
@@ -1810,7 +1795,7 @@ toolchain_src_install() {
 	#  - "${D}${LIBPATH}"
 	# As dostrip does not specify host to override ${CHOST} tools just skip
 	# non-native binary stripping.
-	is_crosscompile && tc_supports_dostrip && dostrip -x "${LIBPATH}"
+	is_crosscompile && dostrip -x "${LIBPATH}"
 
 	cd "${S}"
 	if is_crosscompile; then
@@ -2134,7 +2119,7 @@ gcc_slot_java() {
 
 #---->> pkg_post* <<----
 
-toolchain_pkg_postinst() {
+toolchain-legacy_pkg_postinst() {
 	do_gcc_config
 	if [[ ! ${ROOT%/} && -f ${EPREFIX}/usr/share/eselect/modules/compiler-shadow.eselect ]] ; then
 		eselect compiler-shadow update all
@@ -2154,7 +2139,7 @@ toolchain_pkg_postinst() {
 	fi
 }
 
-toolchain_pkg_postrm() {
+toolchain-legacy_pkg_postrm() {
 	do_gcc_config
 	if [[ ! ${ROOT%/} && -f ${EPREFIX}/usr/share/eselect/modules/compiler-shadow.eselect ]] ; then
 		eselect compiler-shadow clean all
@@ -2273,42 +2258,42 @@ gcc-lang-supported() {
 
 is_ada() {
 	gcc-lang-supported ada || return 1
-	use_if_iuse ada
+	in_iuse ada && use ada
 }
 
 is_cxx() {
 	gcc-lang-supported 'c++' || return 1
-	use_if_iuse cxx
+	in_iuse cxx && use cxx
 }
 
 is_d() {
 	gcc-lang-supported d || return 1
-	use_if_iuse d
+	in_iuse d && use d
 }
 
 is_f77() {
 	gcc-lang-supported f77 || return 1
-	use_if_iuse fortran
+	in_iuse fortran && use fortran
 }
 
 is_f95() {
 	gcc-lang-supported f95 || return 1
-	use_if_iuse fortran
+	in_iuse fortran && use fortran
 }
 
 is_fortran() {
 	gcc-lang-supported fortran || return 1
-	use_if_iuse fortran
+	in_iuse fortran && use fortran
 }
 
 is_gcj() {
 	gcc-lang-supported java || return 1
-	use_if_iuse cxx && use_if_iuse gcj
+	in_iuse cxx && use cxx && in_iuse gcj && use gcj
 }
 
 is_go() {
 	gcc-lang-supported go || return 1
-	use_if_iuse cxx && use_if_iuse go
+	in_iuse cxx && use cxx && in_iuse go && use go
 }
 
 is_jit() {
@@ -2317,22 +2302,22 @@ is_jit() {
 	# to generate code for a target. On target like avr
 	# libgcclit.so can't link at all: bug #594572
 	is_crosscompile && return 1
-	use_if_iuse jit
+	in_iuse jit && use jit
 }
 
 is_multilib() {
 	tc_version_is_at_least 3 || return 1
-	use_if_iuse multilib
+	in_iuse multilib && use multilib
 }
 
 is_objc() {
 	gcc-lang-supported objc || return 1
-	use_if_iuse objc
+	in_iuse objc && use objc
 }
 
 is_objcxx() {
 	gcc-lang-supported 'obj-c++' || return 1
-	use_if_iuse cxx && use_if_iuse objc++
+	in_iuse cxx && use cxx && in_iuse objc++ && use objc++
 }
 
 # Grab a variable from the build system (taken from linux-info.eclass)
@@ -2357,12 +2342,12 @@ hardened_gcc_works() {
 		[[ ${CTARGET} == *-freebsd* ]] && return 1
 
 		want_pie || return 1
-		use_if_iuse nopie && return 1
+		in_iuse nopie && use nopie && return 1
 		hardened_gcc_is_stable pie
 		return $?
 	elif [[ $1 == "ssp" ]] ; then
 		[[ -n ${SPECS_VER} ]] || return 1
-		use_if_iuse nossp && return 1
+		in_iuse nossp && use nossp
 		hardened_gcc_is_stable ssp
 		return $?
 	else
@@ -2400,12 +2385,12 @@ want_minispecs() {
 	if tc_version_is_at_least 6.0 ; then
 		return 0
 	fi
-	if tc_version_is_at_least 4.3.2 && use_if_iuse hardened ; then
+	if tc_version_is_at_least 4.3.2 && in_iuse hardened && use hardened ; then
 		if ! want_pie ; then
 			ewarn "PIE_VER or SPECS_VER is not defined in the GCC ebuild."
 		elif use vanilla ; then
 			ewarn "You will not get hardened features if you have the vanilla USE-flag."
-		elif use_if_iuse nopie && use_if_iuse nossp ; then
+		elif in_iuse nopie && use nopie && in_iuse nossp && use nossp ; then
 			ewarn "You will not get hardened features if you have the nopie and nossp USE-flag."
 		elif ! hardened_gcc_works ; then
 			ewarn "Your $(tc-arch) arch is not supported."
@@ -2419,11 +2404,11 @@ want_minispecs() {
 }
 
 want_pie() {
-	! use_if_iuse hardened && [[ -n ${PIE_VER} ]] && use_if_iuse nopie && return 1
+	( ! in_iuse hardened || (in_iuse hardened && ! use hardened )) && [[ -n ${PIE_VER} ]] && ( in_iuse nopie && use nopie ) && return 1
 	[[ -n ${PIE_VER} ]] && [[ -n ${SPECS_VER} ]] && return 0
 	tc_version_is_at_least 4.3.2 && return 1
 	[[ -z ${PIE_VER} ]] && return 1
-	use_if_iuse nopie || return 0
+	in_iuse nopie && use nopie || return 0
 	return 1
 }
 
