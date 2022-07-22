@@ -6,7 +6,7 @@ EAPI=8
 PATCH_VER="1.5"
 UCLIBC_VER="1.0"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
 
@@ -29,5 +29,5 @@ src_prepare() {
 	# drop the x32 stuff once 4.7 goes stable
 	EPATCH_EXCLUDE+=" 80_all_gcc-4.6-x32.patch"
 
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 }

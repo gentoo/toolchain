@@ -6,7 +6,7 @@ EAPI=8
 PATCH_VER="1.10"
 UCLIBC_VER="1.1"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS=""
 
@@ -17,7 +17,7 @@ DEPEND="${RDEPEND}
 	>=${CATEGORY}/binutils-2.15.94"
 
 src_prepare() {
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 
 	use vanilla && return 0
 

@@ -9,7 +9,7 @@ UCLIBC_VER="1.0"
 UCLIBC_GCC_VER="4.0.0"
 HTB_VER="1.00"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS=""
 
@@ -18,7 +18,7 @@ DEPEND="${RDEPEND}
 	>=${CATEGORY}/binutils-2.15.94"
 
 src_prepare() {
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 
 	use vanilla && return 0
 

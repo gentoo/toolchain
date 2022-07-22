@@ -19,7 +19,7 @@ SSP_STABLE="amd64 x86 mips ppc ppc64 arm"
 SSP_UCLIBC_STABLE="x86 amd64 mips ppc ppc64 arm"
 #end Hardened stuff
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 m68k ~mips ppc ppc64 ~s390 sparc x86"
 
@@ -39,5 +39,5 @@ src_prepare() {
 		EPATCH_EXCLUDE+=" 10_all_default-fortify-source.patch"
 	fi
 
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 }

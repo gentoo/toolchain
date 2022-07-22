@@ -6,7 +6,7 @@ EAPI=8
 PATCH_VER="1.5"
 UCLIBC_VER="1.0"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS=""
 
@@ -21,7 +21,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_prepare() {
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 
 	use vanilla && return 0
 

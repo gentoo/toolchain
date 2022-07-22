@@ -6,7 +6,7 @@ EAPI=8
 PATCH_VER="1.2"
 UCLIBC_VER="1.0"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS=""
 

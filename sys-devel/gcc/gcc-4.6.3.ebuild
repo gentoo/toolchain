@@ -6,7 +6,7 @@ EAPI=8
 PATCH_VER="1.13"
 UCLIBC_VER="1.0"
 
-inherit toolchain
+inherit toolchain-legacy
 
 KEYWORDS="alpha amd64 arm hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sparc x86"
 
@@ -26,5 +26,5 @@ src_prepare() {
 		EPATCH_EXCLUDE+=" 10_all_default-fortify-source.patch"
 	fi
 
-	toolchain_src_prepare
+	toolchain-legacy_src_prepare
 }
