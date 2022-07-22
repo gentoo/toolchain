@@ -1,7 +1,7 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI=8
 
 PATCH_VER="1.6"
 PATCH_GCC_VER="4.0.2"
@@ -23,5 +23,5 @@ src_prepare() {
 	use vanilla && return 0
 
 	# Fix cross-compiling
-	epatch "${FILESDIR}"/4.0.2/gcc-4.0.2-cross-compile.patch
+	eapply "${FILESDIR}"/4.0.2/gcc-4.0.2-cross-compile.patch
 }
