@@ -1,0 +1,15 @@
+certificate version 0.1
+pusher Sam James <sam@gentoo.org> 1718413569 +0100
+pushee git+ssh://git.gentoo.org/proj/toolchain.git
+nonce 1718413569-21528a6791ca7a40b83f66c166f091f3f5038907
+
+d0c131656083377a155cad40ecb629a21770eac7 9356183bfa9edde08c4a9e67b9af4b10bb7d9ca3 refs/heads/master
+-----BEGIN PGP SIGNATURE-----
+
+iOUEABYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZmzpAV8UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv
+by5vcmcACgkQc4QJ9SDfkZBQYgD+K5SMcMfnkQldYKmjnZhCFiEE1mXODOY77cE2
+4C+rxggBANsTknAtRo7o0p+HYTDAYbHkz7/xB+gh4q3FS1+nHQYN
+=zY3j
+-----END PGP SIGNATURE-----
