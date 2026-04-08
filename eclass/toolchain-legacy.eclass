@@ -265,21 +265,6 @@ S=$(
 	fi
 )
 
-gentoo_urls() {
-	local devspace="
-		HTTP~soap/distfiles/URI
-		HTTP~sam/distfiles/URI
-		HTTP~sam/distfiles/sys-devel/gcc/URI
-		HTTP~tamiko/distfiles/URI
-		HTTP~zorry/patches/gcc/URI
-		HTTP~vapier/dist/URI
-		HTTP~blueness/dist/URI
-		http://bloodnoc.org/~roy/olde-distfiles/URI
-	"
-	devspace=${devspace//HTTP/https:\/\/dev.gentoo.org\/}
-	echo ${devspace//URI/$1} mirror://gentoo/$1
-}
-
 # This function handles the basics of setting the SRC_URI for a gcc ebuild.
 # To use, set SRC_URI with:
 #
@@ -360,17 +345,17 @@ get_gcc_src_uri() {
 	fi
 
 	[[ -n ${UCLIBC_VER} ]] && \
-		GCC_SRC_URI+=" $(gentoo_urls gcc-${UCLIBC_GCC_VER}-uclibc-patches-${UCLIBC_VER}.tar.bz2)"
+		GCC_SRC_URI+=" https://distfiles.gentoo.org/pub/proj/toolchain/gcc/patches/gcc-${UCLIBC_GCC_VER}-uclibc-patches-${UCLIBC_VER}.tar.bz2"
 	[[ -n ${PATCH_VER} ]] && \
-		GCC_SRC_URI+=" $(gentoo_urls gcc-${PATCH_GCC_VER}-patches-${PATCH_VER}.tar.bz2)"
+		GCC_SRC_URI+=" https://distfiles.gentoo.org/pub/proj/toolchain/gcc/patches/gcc-${PATCH_GCC_VER}-patches-${PATCH_VER}.tar.bz2"
 
 	[[ -n ${PIE_VER} ]] && \
 		PIE_CORE=${PIE_CORE:-gcc-${PIE_GCC_VER}-piepatches-v${PIE_VER}.tar.bz2} && \
-		GCC_SRC_URI+=" $(gentoo_urls ${PIE_CORE})"
+		GCC_SRC_URI+=" https://distfiles.gentoo.org/pub/proj/toolchain/gcc/patches/${PIE_CORE}"
 
 	# gcc minispec for the hardened gcc 4 compiler
 	[[ -n ${SPECS_VER} ]] && \
-		GCC_SRC_URI+=" $(gentoo_urls gcc-${SPECS_GCC_VER}-specs-${SPECS_VER}.tar.bz2)"
+		GCC_SRC_URI+=" https://distfiles.gentoo.org/pub/proj/toolchain/gcc/patches/gcc-${SPECS_GCC_VER}-specs-${SPECS_VER}.tar.bz2"
 
 	if tc_has_feature gcj ; then
 		if tc_version_is_at_least 4.5 ; then
